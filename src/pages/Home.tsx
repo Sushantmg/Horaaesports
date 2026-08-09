@@ -1,5 +1,6 @@
 import Hero from "../sections/Hero";
 import Ticker from "../sections/Ticker";
+import Showreel from "../sections/Showreel";
 import AboutStrip from "../sections/AboutStrip";
 import Videos from "../sections/Videos";
 import StatsBand from "../sections/StatsBand";
@@ -18,6 +19,7 @@ export default function Home() {
     <main id="home">
       <Hero />
       <Ticker />
+      <Showreel />
       <AboutStrip />
       <StatsBand />
       <Achievements />

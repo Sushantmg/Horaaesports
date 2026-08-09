@@ -3673,6 +3673,313 @@ button {
 }
 
 /* ============================================================
+   SHOWREEL — SQUAD MONTAGE
+   ============================================================ */
+.showreel {
+  padding: 72px 0 0;
+}
+
+.showreel-stage {
+  position: relative;
+  height: clamp(420px, 68vh, 620px);
+  margin-top: 36px;
+  overflow: hidden;
+  background: #0b0a13;
+}
+
+.showreel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+  pointer-events: none;
+}
+
+.showreel-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.showreel-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  animation-duration: 6s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.showreel-img.kb-0 { animation-name: kb-a; }
+.showreel-img.kb-1 { animation-name: kb-b; }
+.showreel-img.kb-2 { animation-name: kb-c; }
+
+@keyframes kb-a {
+  from { transform: scale(1.02) translate(0, 0); }
+  to { transform: scale(1.16) translate(1.5%, -1.5%); }
+}
+@keyframes kb-b {
+  from { transform: scale(1.06) translate(-1%, 1%); }
+  to { transform: scale(1.18) translate(1%, 1.5%); }
+}
+@keyframes kb-c {
+  from { transform: scale(1.04) translate(1%, -1%); }
+  to { transform: scale(1.15) translate(-1.5%, 1%); }
+}
+
+.showreel-lineup {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.4vw, 26px);
+  padding: 0 5vw;
+  background:
+    radial-gradient(70% 80% at 50% 45%, rgba(0, 56, 147, 0.28), transparent 70%),
+    linear-gradient(180deg, rgba(6, 6, 10, 0.35), rgba(6, 6, 10, 0.6));
+}
+
+.showreel-player {
+  flex: 0 1 clamp(120px, 16vw, 200px);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(34px) scale(0.94);
+  animation: lineup-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.1s;
+}
+
+@keyframes lineup-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.showreel-player-photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+  background: #0b0a13;
+}
+
+.showreel-player-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(6, 6, 10, 0.82) 100%);
+}
+
+.showreel-player-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.05);
+}
+
+.showreel-player-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.showreel-player-ign {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2vw, 1.3rem);
+  letter-spacing: 0.06em;
+  color: var(--cream);
+}
+
+.showreel-player-role {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 3px;
+}
+
+.showreel-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 6, 10, 0.55) 0%, transparent 26%, transparent 55%, rgba(6, 6, 10, 0.88) 100%);
+  pointer-events: none;
+}
+
+.showreel-scan {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  pointer-events: none;
+}
+
+.showreel-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(6, 6, 10, 0.55) 100%);
+  pointer-events: none;
+}
+
+.showreel-hud {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  color: rgba(245, 241, 232, 0.8);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.showreel-hud-label {
+  color: var(--crimson-soft);
+}
+
+.showreel-caption {
+  position: absolute;
+  left: max(22px, 6vw);
+  bottom: 74px;
+  z-index: 3;
+  max-width: 720px;
+  animation: caption-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes caption-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.showreel-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(6, 6, 10, 0.6);
+  border: 1px solid rgba(240, 180, 41, 0.35);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.showreel-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4.4vw, 2.7rem);
+  line-height: 1.12;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+.showreel-controls {
+  position: absolute;
+  left: max(22px, 6vw);
+  right: max(22px, 6vw);
+  bottom: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.showreel-btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(6, 6, 10, 0.55);
+  color: var(--cream);
+  font-size: 0.85rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+.showreel-btn:hover {
+  color: var(--gold);
+  border-color: rgba(240, 180, 41, 0.5);
+  transform: translateY(-2px);
+}
+
+.showreel-progress {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.showreel-dot {
+  flex: 1;
+  height: 3px;
+  border: 0;
+  padding: 0;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.showreel-dot:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.showreel-dot span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--crimson), var(--gold));
+  border-radius: 100px;
+}
+
+.showreel-dot.active span {
+  animation: dot-fill 4.5s linear forwards;
+}
+
+@keyframes dot-fill {
+  to {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .showreel-player-role { display: none; }
+  .showreel-hud { top: 14px; left: 14px; right: 14px; }
+  .showreel-caption { left: 16px; bottom: 84px; }
+  .showreel-controls { left: 16px; right: 16px; gap: 12px; }
+  .showreel-btn { width: 32px; height: 32px; }
+}
+
+/* ============================================================
    PRELOADER — BOOT TRANSITION
    ============================================================ */
 body.preload-lock {
