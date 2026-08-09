@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollTop from "./components/ScrollTop";
 import Preloader from "./components/Preloader";
+import IntroCinematic from "./components/IntroCinematic";
 import Home from "./pages/Home";
 import PlayerDetail from "./pages/PlayerDetail";
 import NewsDetail from "./pages/NewsDetail";
@@ -21,14 +22,20 @@ import ContactPage from "./pages/ContactPage";
 export default function App() {
   const { pathname } = useLocation();
   const [booted, setBooted] = useState(false);
+  const [intro, setIntro] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [pathname]);
 
+  const handlePreloadDone = () => {
+    setBooted(true);
+    setIntro(true);
+  };
+
   return (
     <>
-      <Preloader onDone={() => setBooted(true)} />
+      <Preloader onDone={handlePreloadDone} />
       {booted && (
         <div className="site">
           <BackgroundCanvas />
@@ -52,6 +59,7 @@ export default function App() {
           <ScrollTop />
         </div>
       )}
+      {intro && <IntroCinematic onFinish={() => setIntro(false)} />}
     </>
   );
 }
