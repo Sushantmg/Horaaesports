@@ -3673,64 +3673,18 @@ button {
 }
 
 /* ============================================================
-   CINEMATIC INTRO — SQUAD MONTAGE (shared scene classes below)
+   SHOWREEL — SQUAD MONTAGE
    ============================================================ */
-.intro {
-  position: fixed;
-  inset: 0;
-  z-index: 9000;
+.showreel {
+  padding: 72px 0 0;
+}
+
+.showreel-stage {
+  position: relative;
+  height: clamp(420px, 68vh, 620px);
+  margin-top: 36px;
   overflow: hidden;
   background: #0b0a13;
-  opacity: 1;
-  transition: opacity 0.85s ease;
-}
-
-.intro.leaving {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.intro-stage {
-  position: absolute;
-  inset: 0;
-}
-
-.intro-boot {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background:
-    radial-gradient(80% 60% at 50% 42%, rgba(200, 16, 46, 0.12), transparent 62%),
-    linear-gradient(180deg, #07060c 0%, #0b0a13 55%, #130b17 100%);
-}
-
-.intro-boot-brand {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 7vw, 3.4rem);
-  line-height: 1;
-  letter-spacing: 0.06em;
-  color: var(--cream);
-  margin-top: 18px;
-  text-shadow: 0 0 34px rgba(200, 16, 46, 0.45);
-}
-
-.intro-boot-sub {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, 3vw, 1.3rem);
-  letter-spacing: 0.5em;
-  text-indent: 0.5em;
-  color: var(--crimson-soft);
-  margin-top: 4px;
-}
-
-.intro-stage .showreel-img {
-  animation-duration: 3.4s;
 }
 
 .showreel-slide {
@@ -3944,51 +3898,62 @@ button {
   margin: 0;
 }
 
-.intro-skip {
+.showreel-controls {
   position: absolute;
-  top: 22px;
-  right: 22px;
-  z-index: 5;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--cream);
-  background: rgba(6, 6, 10, 0.55);
+  left: max(22px, 6vw);
+  right: max(22px, 6vw);
+  bottom: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.showreel-btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   border: 1px solid var(--line);
-  border-radius: 100px;
-  padding: 9px 18px;
+  background: rgba(6, 6, 10, 0.55);
+  color: var(--cream);
+  font-size: 0.85rem;
   cursor: pointer;
   backdrop-filter: blur(6px);
   transition: all 0.3s ease;
 }
 
-.intro-skip:hover {
+.showreel-btn:hover {
   color: var(--gold);
   border-color: rgba(240, 180, 41, 0.5);
   transform: translateY(-2px);
 }
 
-.intro-progress {
-  position: absolute;
-  left: max(22px, 6vw);
-  right: max(22px, 6vw);
-  bottom: 26px;
-  z-index: 5;
+.showreel-progress {
+  flex: 1;
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.intro-dot {
+.showreel-dot {
   flex: 1;
   height: 3px;
+  border: 0;
+  padding: 0;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.18);
   overflow: hidden;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.intro-dot span {
+.showreel-dot:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.showreel-dot span {
   display: block;
   height: 100%;
   width: 0;
@@ -3996,8 +3961,8 @@ button {
   border-radius: 100px;
 }
 
-.intro-dot.active span {
-  animation: dot-fill var(--intro-dur, 3.2s) linear forwards;
+.showreel-dot.active span {
+  animation: dot-fill 4.5s linear forwards;
 }
 
 @keyframes dot-fill {
@@ -4009,9 +3974,9 @@ button {
 @media (max-width: 640px) {
   .showreel-player-role { display: none; }
   .showreel-hud { top: 14px; left: 14px; right: 14px; }
-  .showreel-caption { left: 16px; bottom: 74px; }
-  .intro-skip { top: 14px; right: 14px; padding: 8px 14px; }
-  .intro-progress { left: 16px; right: 16px; gap: 8px; }
+  .showreel-caption { left: 16px; bottom: 84px; }
+  .showreel-controls { left: 16px; right: 16px; gap: 12px; }
+  .showreel-btn { width: 32px; height: 32px; }
 }
 
 /* ============================================================
@@ -4210,4 +4175,373 @@ body.preload-lock {
   .preloader-corner.tr { top: 14px; right: 14px; }
   .preloader-corner.bl { bottom: 14px; left: 14px; }
   .preloader-corner.br { bottom: 14px; right: 14px; }
+}
+
+/* ============================================================
+   PRIDE INTRO — #FORNEPAL GLORY SEQUENCE
+   ============================================================ */
+.pride {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 50% 38%, rgba(200, 16, 46, 0.16), transparent 62%),
+    radial-gradient(55% 50% at 82% 82%, rgba(0, 56, 147, 0.18), transparent 62%),
+    linear-gradient(180deg, #07060c 0%, #0b0a13 55%, #120a16 100%);
+  transition: opacity 0.9s ease;
+}
+
+.pride.leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pride-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(72% 62% at 50% 50%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(72% 62% at 50% 50%, #000 30%, transparent 100%);
+}
+
+.pride-fire {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pride-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -180px;
+  height: 180px;
+  background: linear-gradient(180deg, transparent, rgba(247, 166, 0, 0.05), transparent);
+  animation: scan-move 3s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pride-mount {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  height: 40vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pride-mount.back {
+  background: linear-gradient(180deg, rgba(0, 56, 147, 0.16), rgba(6, 6, 10, 0.6));
+  clip-path: polygon(0% 100%, 8% 60%, 20% 78%, 32% 38%, 44% 70%, 58% 26%, 72% 64%, 84% 44%, 100% 72%, 100% 100%);
+}
+
+.pride-mount.front {
+  height: 24vh;
+  background: linear-gradient(180deg, rgba(200, 16, 46, 0.12), rgba(6, 6, 10, 0.55));
+  clip-path: polygon(0% 100%, 12% 68%, 26% 82%, 40% 50%, 55% 78%, 70% 58%, 100% 84%, 100% 100%);
+}
+
+.pride-flag-wrap,
+.pride-brand,
+.pride-static {
+  grid-area: 1 / 1;
+  z-index: 3;
+}
+
+.pride-flag-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: pride-flag-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pride-flag-in {
+  0% {
+    transform: scale(2.4) translateY(-60px);
+    opacity: 0;
+    filter: blur(14px);
+  }
+  55% {
+    transform: scale(0.88) translateY(8px);
+    opacity: 1;
+    filter: blur(0);
+  }
+  72% {
+    transform: scale(1.08) translateY(-3px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.pride-flag {
+  position: relative;
+  filter: drop-shadow(0 14px 40px rgba(200, 16, 46, 0.55)) drop-shadow(0 0 26px rgba(240, 180, 41, 0.28));
+  animation: pride-flag-wave 3s ease-in-out infinite;
+}
+
+.pride-flag-mini {
+  display: flex;
+  animation: pride-flag-wave 3s ease-in-out infinite;
+}
+
+@keyframes pride-flag-wave {
+  0%, 100% { transform: rotate(-1.4deg); }
+  50% { transform: rotate(1.4deg) translateY(-4px); }
+}
+
+.pride-ring {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: 64vmin;
+  height: 64vmin;
+  margin: -32vmin 0 0 -32vmin;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 180, 41, 0.5);
+  box-shadow: 0 0 40px rgba(240, 180, 41, 0.3), inset 0 0 30px rgba(200, 16, 46, 0.25);
+  animation: pride-ring 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+.pride-ring.r2 {
+  animation-delay: 0.4s;
+}
+
+@keyframes pride-ring {
+  0% {
+    transform: scale(0.25);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+.pride-flag-word {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--cream);
+  margin-top: 26px;
+  text-shadow: 0 3px 22px rgba(200, 16, 46, 0.5);
+  animation: pride-word-in 0.9s ease 0.35s both;
+}
+
+@keyframes pride-word-in {
+  from {
+    opacity: 0;
+    letter-spacing: 0.9em;
+    text-indent: 0.9em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+  }
+}
+
+.pride-brand {
+  position: relative;
+  text-align: center;
+}
+
+.pride-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  animation: pride-flash 0.5s ease 0.18s both;
+  pointer-events: none;
+}
+
+@keyframes pride-flash {
+  0% { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+
+.pride-word {
+  display: flex;
+  justify-content: center;
+  gap: clamp(2px, 1vw, 10px);
+  animation: pride-thud 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.7s both;
+}
+
+.pride-letter {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 13vw, 8.5rem);
+  line-height: 0.95;
+  color: var(--cream);
+  text-shadow:
+    0 0 30px rgba(200, 16, 46, 0.65),
+    0 6px 0 rgba(200, 16, 46, 0.25);
+  transform: translateY(120%);
+  animation: pride-letter-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pride-letter-in {
+  0% {
+    transform: translateY(130%) rotate(14deg) scale(1.5);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-10%) rotate(-2deg) scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pride-thud {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.14) translateY(6px); }
+  45% { transform: scale(0.94); }
+  65% { transform: scale(1.05); }
+}
+
+.pride-sub {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 2.6vw, 1.4rem);
+  letter-spacing: 0.55em;
+  text-indent: 0.55em;
+  color: var(--gold);
+  margin-top: 16px;
+  opacity: 0;
+  animation: pride-sub-in 0.9s ease 0.55s forwards;
+}
+
+@keyframes pride-sub-in {
+  from {
+    opacity: 0;
+    letter-spacing: 0.95em;
+    text-indent: 0.95em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.55em;
+    text-indent: 0.55em;
+  }
+}
+
+.pride-tagline {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(70px, 11vh, 130px);
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  white-space: nowrap;
+  animation: pride-tagline-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pride-tagline-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.pride-hash {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4.6vw, 2.6rem);
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-shadow: 0 0 24px rgba(240, 180, 41, 0.55);
+}
+
+.pride-quote {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  max-width: 280px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.pride-static {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.pride-static-brand {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 9vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--cream);
+  text-shadow: 0 0 34px rgba(200, 16, 46, 0.45);
+}
+
+.pride-static-sub {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.34em;
+  color: var(--gold);
+}
+
+.pride-skip {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 8;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(6, 6, 10, 0.55);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 9px 18px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+.pride-skip:hover {
+  color: var(--gold);
+  border-color: rgba(240, 180, 41, 0.5);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .pride-tagline {
+    flex-direction: column;
+    gap: 8px;
+    white-space: normal;
+    text-align: center;
+    padding: 0 24px;
+    width: 100%;
+  }
+  .pride-quote { text-align: center; }
+  .pride-skip { top: 14px; right: 14px; padding: 8px 14px; }
 }
