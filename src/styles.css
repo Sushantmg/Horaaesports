@@ -4224,12 +4224,6 @@ body.preload-lock {
   mask-image: radial-gradient(72% 62% at 50% 50%, #000 30%, transparent 100%);
 }
 
-.pride-fire {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
 .pride-scan {
   position: absolute;
   left: 0;
@@ -4648,6 +4642,63 @@ body.preload-lock {
   max-width: 560px;
 }
 
+.pride-cr7 {
+  position: absolute;
+  top: clamp(56px, 9vh, 118px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  animation: pride-cr7-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pride-cr7-in {
+  from { opacity: 0; transform: translate(-50%, -34px) scale(0.86); filter: blur(10px); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); filter: blur(0); }
+}
+
+.pride-cr7-frame {
+  position: relative;
+  padding: 7px;
+  border-radius: 26px;
+  background: conic-gradient(from 210deg, #f0b429, #c8102e, #003893, #ffd27a, #f0b429);
+  box-shadow:
+    0 0 46px rgba(240, 180, 41, 0.32),
+    0 0 20px rgba(200, 16, 46, 0.35),
+    0 24px 60px rgba(6, 6, 10, 0.6);
+}
+
+.pride-cr7-photo {
+  display: block;
+  width: clamp(116px, 22vh, 196px);
+  height: clamp(116px, 22vh, 196px);
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 19px;
+  transform: rotate(-1.4deg);
+}
+
+.pride-cr7-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 3.2vw, 1.7rem);
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  color: var(--gold);
+  text-shadow: 0 0 26px rgba(240, 180, 41, 0.55);
+}
+
+.pride-cr7-role {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .pride-static {
   display: flex;
   flex-direction: column;
@@ -4705,6 +4756,9 @@ body.preload-lock {
   .pride-corner.tr { top: 12px; right: 12px; }
   .pride-corner.bl { bottom: 12px; left: 12px; }
   .pride-corner.br { bottom: 12px; right: 12px; }
+  .pride-cr7 { top: clamp(48px, 8.5vh, 80px); gap: 7px; }
+  .pride-cr7-frame { padding: 5px; border-radius: 20px; }
+  .pride-cr7-photo { width: clamp(96px, 19vh, 150px); height: clamp(96px, 19vh, 150px); border-radius: 15px; }
   .pride-footer { bottom: 34px; gap: 10px; }
   .pride-chips { gap: 6px; }
   .pride-chip { font-size: 0.5rem; padding: 5px 10px; letter-spacing: 0.14em; }
