@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import NepalFlag from "./NepalFlag";
 
-const PHASES = [1700, 1800, 3000];
+const PHASES = [1700, 1800, 5000];
 const FADE = 900;
 const FIRE_COLORS = ["#c8102e", "#f0b429", "#003893", "#ffffff", "#ff5c73", "#ffd27a", "#b01830"];
 const NEPAL_COLORS = ["#c8102e", "#f0b429", "#003893", "#ffffff"];
@@ -13,7 +13,7 @@ const rnd = Math.random;
 type Shape = "rect" | "petal";
 
 type P = {
-  kind: "spark" | "glitter" | "rocket" | "confetti" | "fuse";
+  kind: "spark" | "glitter" | "rocket" | "confetti" | "fuse" | "comet";
   x: number;
   y: number;
   vx: number;
@@ -34,6 +34,7 @@ type P = {
   h: number;
   targetY: number;
   shape: Shape;
+  trail: Array<{ x: number; y: number }>;
 };
 
 interface FxApi {
@@ -104,6 +105,7 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
     let last = 0;
     let confInterval = 0;
     let fireInterval = 0;
+    let cometInterval = 0;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const parts: P[] = [];
     const stars: Array<{ x: number; y: number; r: number; tw: number; ts: number }> = [];
@@ -148,6 +150,7 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
       rot: 0, vrot: 0, grav: 0.06, drag: 0.985,
       tw: 0, ts: 0, ph: 0, sway: 0, w: 0, h: 0, targetY: 0,
       shape: "rect",
+      trail: [],
       ...p,
     });
 
@@ -297,44 +300,64 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
       }
     };
 
-    const launch = () => {
-      const c = 2 + (rnd() < 0.5 ? 1 : 0);
+    let sweepX = 0;
+    const launch = (jitter = 0.05) => {
+      sweepX = (sweepX + width * 0.055) % width;
+      const c = 1 + (rnd() < 0.55 ? 1 : 0);
       for (let i = 0; i < c; i++) {
         parts.push(
           spark({
             kind: "rocket",
-            x: width * (0.1 + rnd() * 0.8),
+            x: Math.max(12, Math.min(width - 12, sweepX + (rnd() - 0.5) * width * jitter)),
             y: height + 4,
             vx: (rnd() - 0.5) * 1,
             vy: -(8 + rnd() * 3.8),
             r: 2,
             color: FIRE_COLORS[Math.floor(rnd() * FIRE_COLORS.length)],
-            targetY: height * (0.08 + rnd() * 0.46),
+            targetY: height * (0.06 + rnd() * 0.32),
           })
         );
       }
     };
 
+    const comet = () => {
+      parts.push(
+        spark({
+          kind: "comet",
+          x: -30,
+          y: height * (0.04 + rnd() * 0.24),
+          vx: 9 + rnd() * 6,
+          vy: (rnd() - 0.5) * 1.2,
+          r: 3,
+          color: ["#f0b429", "#ffffff", "#ffd977"][Math.floor(rnd() * 3)],
+        })
+      );
+    };
+
     const finale = () => {
-      for (let i = 0; i < 9; i++) {
+      const n = 10;
+      for (let i = 0; i < n; i++) {
         parts.push(
           spark({
             kind: "rocket",
-            x: width * (0.06 + i * 0.11 + rnd() * 0.04),
+            x: Math.max(12, Math.min(width - 12, (width * (i + 0.5)) / n + (rnd() - 0.5) * width * 0.04)),
             y: height + 4,
             vx: (rnd() - 0.5) * 1.4,
             vy: -(9 + rnd() * 4),
             r: 2.2,
             color: FIRE_COLORS[i % FIRE_COLORS.length],
-            targetY: height * (0.06 + rnd() * 0.52),
+            targetY: height * (0.06 + rnd() * 0.3),
           })
         );
       }
+      comet();
+      comet();
+      comet();
       const cx = width / 2;
-      const cy = height * 0.3;
-      sphereBurst(cx, cy, NEPAL_COLORS, 140, 8, 0.06);
+      const cy = height * 0.16;
+      sphereBurst(cx, cy, NEPAL_COLORS, 150, 8, 0.06);
       ringBurst(cx, cy, ["#f0b429", "#ffffff"], 6);
-      confetti(34);
+      confetti(36);
     };
 
     const draw = (now: number) => {
@@ -452,6 +475,39 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
           continue;
         }
 
+        if (p.kind === "comet") {
+          p.x += p.vx * dt * 60;
+          p.y += p.vy * dt * 60;
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 30) p.trail.shift();
+          if (p.x > width + 80 || p.y > height + 60) {
+            parts.splice(i, 1);
+            continue;
+          }
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          for (let t = 1; t < p.trail.length; t++) {
+            const a = t / p.trail.length;
+            ctx.globalAlpha = a * 0.85;
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = 0.8 + a * 3;
+            ctx.beginPath();
+            ctx.moveTo(p.trail[t - 1].x, p.trail[t - 1].y);
+            ctx.lineTo(p.trail[t].x, p.trail[t].y);
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = "#fff";
+          ctx.shadowBlur = 22;
+          ctx.shadowColor = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.restore();
+          continue;
+        }
+
         p.vy += p.grav * 60 * dt;
         p.vx *= p.drag;
         p.x += p.vx * 60 * dt;
@@ -486,14 +542,20 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
         launch();
         if (rnd() < 0.5) launch();
       }, 360);
+      cometInterval = window.setInterval(() => {
+        comet();
+        if (rnd() < 0.4) comet();
+      }, 1500);
     };
 
     const stopFX = () => {
       if (!confInterval) return;
       clearInterval(confInterval);
       clearInterval(fireInterval);
+      clearInterval(cometInterval);
       confInterval = 0;
       fireInterval = 0;
+      cometInterval = 0;
     };
 
     fxRef.current = {
@@ -606,6 +668,7 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
         <>
           {phase === 1 && (
             <div className="pride-flag-wrap" ref={flagWrapRef}>
+              <span className="pride-sun"></span>
               <span className="pride-ring"></span>
               <span className="pride-ring r2"></span>
               <span className="pride-ring r3"></span>
