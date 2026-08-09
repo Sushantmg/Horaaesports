@@ -9,7 +9,7 @@ export interface Player {
   photo: string;
   stats: { aim: number; clutch: number; tactical: number };
   bio: string;
-  socials: { ig?: string; yt?: string };
+  socials: { ig?: string; yt?: string; tiktok?: string };
 }
 
 export interface Staff {
@@ -47,6 +47,7 @@ export interface GalleryItem {
   tag: string;
   emoji: string;
   bg: string;
+  img?: string;
 }
 
 export interface VideoItem {
@@ -116,8 +117,8 @@ export const PLAYERS: Player[] = [
     tag: "gold",
     photo: "/images/players/jiggle3.jpg",
     stats: { aim: 74, clutch: 82, tactical: 95 },
-    bio: "The brain of the operation. JiGGL3 calls the rotations, controls the tempo and keeps five hunters on the same page. Under his IGL-ing, Horaa won the PMNS 2025 title and stormed through PMWC 2025 group stages.",
-    socials: {},
+    bio: "The brain of the operation. JiGGL3 is known for his calm mind, strategic mindset and the ability to handle pressure in the most intense situations — he calls the rotations, controls the tempo and keeps five hunters on the same page. He started PUBG Mobile in 2018 and never looked back. Under his IGL-ing, Horaa won the PMNS 2025 title and stormed through the PMWC 2025 group stages.",
+    socials: { ig: "https://www.instagram.com/jigglee1_/", yt: "https://www.youtube.com/@JiGGL3_YT" },
   },
   {
     slug: "sky",
@@ -129,8 +130,8 @@ export const PLAYERS: Player[] = [
     tag: "fragger",
     photo: "/images/players/sky.jpg",
     stats: { aim: 96, clutch: 88, tactical: 70 },
-    bio: "Horaa's entry machine and a fan favourite. SkY — one of the founding members — owns the Grand Finals MVP at the Ruthless Pro Series and remains the deadliest barrel in the squad.",
-    socials: {},
+    bio: "Horaa's entry machine and a fan favourite, known across the region for his exceptional aim. SkY — one of the founding members — owns the Grand Finals MVP at the Ruthless Pro Series and remains the deadliest barrel in the squad, snapping heads before opponents even finish rotating.",
+    socials: { ig: "https://www.instagram.com/skyhoraa/", yt: "https://www.youtube.com/@SkyyPUBGM", tiktok: "https://www.tiktok.com/@skyhoraaa" },
   },
   {
     slug: "nofear",
@@ -142,8 +143,8 @@ export const PLAYERS: Player[] = [
     tag: "fragger",
     photo: "/images/players/nofear.jpg",
     stats: { aim: 90, clutch: 84, tactical: 72 },
-    bio: "Aggression personified. NoFear lives at the top of the kill feed, throwing himself into fights most teams would retreat from — and winning far more than he loses.",
-    socials: {},
+    bio: "Aggression personified. NoFear lives at the top of the kill feed, throwing himself into fights most teams would retreat from — and winning far more than he loses. A fearless fragger who sets the tempo for the entire squad and keeps enemies permanently on the back foot.",
+    socials: { ig: "https://www.instagram.com/_nofear7/", yt: "https://www.youtube.com/@nofearpubg3911", tiktok: "https://www.tiktok.com/@nofearpubgm_" },
   },
   {
     slug: "sleepy",
@@ -155,8 +156,8 @@ export const PLAYERS: Player[] = [
     tag: "fragger",
     photo: "/images/players/sleepy.jpg",
     stats: { aim: 78, clutch: 80, tactical: 88 },
-    bio: "The quiet professional. SleepY anchors fights with disciplined positioning and split-second support calls — the glue that keeps Horaa's front line connected.",
-    socials: {},
+    bio: "The quiet professional. SleepY anchors fights with disciplined positioning and split-second support calls — the glue that keeps Horaa's front line connected. Calm under fire and selfless in clutch moments, he is the support player every great fragger wants behind them.",
+    socials: { ig: "https://www.instagram.com/sleepyyhoraa_/", yt: "https://www.youtube.com/@sleepyyhora", tiktok: "https://www.tiktok.com/@sleepyyhoraa" },
   },
   {
     slug: "haitdami",
@@ -168,7 +169,7 @@ export const PLAYERS: Player[] = [
     tag: "sub",
     photo: "/images/players/haitdami.jpg",
     stats: { aim: 82, clutch: 75, tactical: 70 },
-    bio: "Depth on the bench. HaitDami slots into any of the four roles, letting Horaa flex their lineup against every meta without losing a step.",
+    bio: "Depth on the bench. HaitDami slots into any of the four roles, letting Horaa flex their lineup against every meta without losing a step — a rotational asset who keeps the main squad sharp in scrims.",
     socials: {},
   },
 ];
@@ -340,12 +341,12 @@ export const NEWS: NewsItem[] = [
 ];
 
 export const GALLERY: GalleryItem[] = [
-  { title: "Horaa Esports are the Champions of 2025 PMNS Season!", tag: "Champions", emoji: "🏆", bg: "linear-gradient(135deg, #e31837, #8f1222)" },
-  { title: "Together we grow, stronger every day", tag: "Community", emoji: "🤝", bg: "linear-gradient(135deg, #0f2f7a, #1d4ed8)" },
-  { title: "HORAA Esports secures 2nd Runner-Up at PMTG PRO Season 2", tag: "Podium", emoji: "🥉", bg: "linear-gradient(135deg, #b8860b, #4a3303)" },
-  { title: "Individually we shine, but together we grow.", tag: "Community", emoji: "⭐", bg: "linear-gradient(135deg, #334155, #0f172a)" },
-  { title: "Jersey Reveal", tag: "Merch", emoji: "👕", bg: "linear-gradient(135deg, #7a1d2e, #2b070c)" },
-  { title: "Training Grounds", tag: "Practice", emoji: "🖥️", bg: "linear-gradient(135deg, #059669, #064e3b)" },
+  { title: "Horaa Esports are the Champions of 2025 PMNS Season!", tag: "Champions", emoji: "🏆", bg: "linear-gradient(135deg, #e31837, #8f1222)", img: "/images/gallery/pmns-champions.jpg" },
+  { title: "Together we grow, stronger every day", tag: "Community", emoji: "🤝", bg: "linear-gradient(135deg, #0f2f7a, #1d4ed8)", img: "/images/gallery/together-grow.jpg" },
+  { title: "HORAA Esports secures 2nd Runner-Up at PMTG PRO Season 2", tag: "Podium", emoji: "🥉", bg: "linear-gradient(135deg, #b8860b, #4a3303)", img: "/images/gallery/pmtg-podium.jpg" },
+  { title: "Individually we shine, but together we grow.", tag: "Community", emoji: "⭐", bg: "linear-gradient(135deg, #334155, #0f172a)", img: "/images/gallery/shine-together.jpg" },
+  { title: "Jersey Reveal", tag: "Merch", emoji: "👕", bg: "linear-gradient(135deg, #7a1d2e, #2b070c)", img: "/images/gallery/jersey.jpg" },
+  { title: "Training Grounds", tag: "Practice", emoji: "🖥️", bg: "linear-gradient(135deg, #059669, #064e3b)", img: "/images/gallery/training.jpg" },
 ];
 
 export const VIDEOS: VideoItem[] = [

@@ -89,6 +89,23 @@ export default function PlayerDetail() {
             </div>
             <p className="player-detail-bio">{player.bio}</p>
 
+            {Object.values(player.socials).some(Boolean) && (
+              <div className="player-socials">
+                <span className="player-socials-label">Follow {player.ign}</span>
+                <div className="player-socials-links">
+                  {player.socials.ig && (
+                    <a href={player.socials.ig} target="_blank" rel="noopener noreferrer" className="social-chip">Instagram</a>
+                  )}
+                  {player.socials.yt && (
+                    <a href={player.socials.yt} target="_blank" rel="noopener noreferrer" className="social-chip">YouTube</a>
+                  )}
+                  {player.socials.tiktok && (
+                    <a href={player.socials.tiktok} target="_blank" rel="noopener noreferrer" className="social-chip">TikTok</a>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="player-detail-bars">
               {Object.entries(player.stats).map(([key, val]) => (
                 <div className="bar-row" key={key}>
@@ -101,7 +118,7 @@ export default function PlayerDetail() {
               ))}
             </div>
 
-            <Link className="btn btn-primary" to="/">
+            <Link className="btn btn-primary" to="/roster">
               Meet the Whole Squad
             </Link>
           </Reveal>

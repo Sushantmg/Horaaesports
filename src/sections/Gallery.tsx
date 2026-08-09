@@ -19,10 +19,14 @@ export default function Gallery({ heading = true }: { heading?: boolean }) {
         )}
         <div className="gallery-grid" aria-live="polite">
           {items.map((g, i) => (
-            <Reveal key={g.title} delay={i * 60} as="figure" className="gallery-item" >
+            <Reveal key={g.title} delay={i * 60} as="figure" className="gallery-item">
               <div className="gallery-bg" style={{ background: g.bg }}>
+                {g.img ? (
+                  <img src={g.img} alt={g.title} loading="lazy" className="gallery-photo" />
+                ) : (
+                  <span className="thumb-emoji">{g.emoji}</span>
+                )}
                 <span className="gallery-zoom" aria-hidden="true">⤢</span>
-                <span className="thumb-emoji">{g.emoji}</span>
               </div>
               <figcaption className="gallery-info">
                 <span className="gallery-tag">{g.tag}</span>

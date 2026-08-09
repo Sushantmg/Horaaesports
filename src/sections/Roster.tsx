@@ -86,6 +86,19 @@ export default function Roster({ heading = true }: { heading?: boolean }) {
                       <span>Joined {p.join}</span>
                       <span className="skill">{p.skill}</span>
                     </div>
+                    {Object.values(p.socials).some(Boolean) && (
+                      <div className="player-socials-mini">
+                        {p.socials.ig && (
+                          <a href={p.socials.ig} target="_blank" rel="noopener noreferrer" aria-label={`${p.ign} on Instagram`}>IG</a>
+                        )}
+                        {p.socials.yt && (
+                          <a href={p.socials.yt} target="_blank" rel="noopener noreferrer" aria-label={`${p.ign} on YouTube`}>YT</a>
+                        )}
+                        {p.socials.tiktok && (
+                          <a href={p.socials.tiktok} target="_blank" rel="noopener noreferrer" aria-label={`${p.ign} on TikTok`}>TT</a>
+                        )}
+                      </div>
+                    )}
                     <div className="player-bars">
                       {Object.entries(p.stats).map(([key, val]) => (
                         <div className="bar-row" key={key}>
