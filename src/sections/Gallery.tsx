@@ -4,7 +4,7 @@ import Reveal from "../components/Reveal";
 import { api } from "../api";
 import type { GalleryItem } from "../../shared/data";
 
-export default function Gallery() {
+export default function Gallery({ heading = true }: { heading?: boolean }) {
   const [items, setItems] = useState<GalleryItem[]>([]);
 
   useEffect(() => {
@@ -14,7 +14,9 @@ export default function Gallery() {
   return (
     <section className="section" id="gallery">
       <div className="container">
-        <SectionHeading kicker="// The Frames" title="GALLERY" sub="Moments from the stage, the scrims, and the grind." />
+        {heading && (
+          <SectionHeading kicker="// The Frames" title="GALLERY" sub="Moments from the stage, the scrims, and the grind." />
+        )}
         <div className="gallery-grid" aria-live="polite">
           {items.map((g, i) => (
             <Reveal key={g.title} delay={i * 60} as="figure" className="gallery-item" >

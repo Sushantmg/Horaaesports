@@ -24,7 +24,7 @@ function MatchCard({ m, i }: { m: Match; i: number }) {
   );
 }
 
-export default function Schedule() {
+export default function Schedule({ heading = true }: { heading?: boolean }) {
   const [tab, setTab] = useState<Tab>("upcoming");
   const [upcoming, setUpcoming] = useState<Match[]>([]);
   const [results, setResults] = useState<Match[]>([]);
@@ -37,11 +37,13 @@ export default function Schedule() {
   return (
     <section className="section" id="schedule">
       <div className="container">
-        <SectionHeading
-          kicker="// The Campaign"
-          title="SCHEDULE & RESULTS"
-          sub="Every drop, every rotation, every win — tracked."
-        />
+        {heading && (
+          <SectionHeading
+            kicker="// The Campaign"
+            title="SCHEDULE & RESULTS"
+            sub="Every drop, every rotation, every win — tracked."
+          />
+        )}
 
         <div className="tabs" role="tablist">
           <button

@@ -1,19 +1,45 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const LINKS = [
-  { to: "/", hash: "achievements", label: "Achievements" },
-  { to: "/", hash: "roster", label: "Roster" },
-  { to: "/", hash: "schedule", label: "Schedule" },
-  { to: "/", hash: "news", label: "News" },
-  { to: "/", hash: "gallery", label: "Gallery" },
-  { to: "/", hash: "faq", label: "FAQ" },
-  { to: "/", hash: "contact", label: "Contact" },
+interface NavChild {
+  label: string;
+  to: string;
+}
+
+interface NavItem {
+  label: string;
+  to?: string;
+  children?: NavChild[];
+}
+
+const NAV: NavItem[] = [
+  { label: "Home", to: "/" },
+  {
+    label: "Team",
+    to: "/roster",
+    children: [
+      { label: "Roster", to: "/roster" },
+      { label: "Achievements", to: "/achievements" },
+      { label: "Schedule", to: "/schedule" },
+    ],
+  },
+  {
+    label: "Media",
+    to: "/videos",
+    children: [
+      { label: "Videos", to: "/videos" },
+      { label: "News", to: "/news" },
+      { label: "Gallery", to: "/gallery" },
+    ],
+  },
+  { label: "FAQ", to: "/faq" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -25,6 +51,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpen(false);
+    setOpenGroup(null);
     document.body.classList.remove("no-scroll");
   }, [pathname]);
 
@@ -32,19 +59,9 @@ export default function Navbar() {
     document.body.classList.toggle("no-scroll", open);
   }, [open]);
 
-  const goTo = (hash: string) => {
-    setOpen(false);
-    if (pathname !== "/") {
-      window.location.hash = hash;
-      return;
-    }
-    const el = document.getElementById(hash);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      window.location.hash = hash;
-    }
-  };
+  const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
+
+  const isChildActive = (children: NavChild[]) => children.some((c) => isActive(c.to));
 
   return (
     <>
@@ -57,12 +74,34 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <nav className="nav-links">
-            {LINKS.map((l) => (
-              <button key={l.hash} className="nav-link" onClick={() => goTo(l.hash)}>
-                {l.label}
-              </button>
-            ))}
+          <nav className="nav-links" aria-label="Primary">
+            {NAV.map((item) =>
+              item.children ? (
+                <div key={item.label} className={`nav-group ${isChildActive(item.children) ? "active" : ""}`}>
+                  <Link to={item.to!} className={`nav-link nav-group-label ${isActive(item.to!) ? "current" : ""}`}>
+                    {item.label} <span className="caret">▾</span>
+                  </Link>
+                  <div className="dropdown">
+                    {item.children.map((c) => (
+                      <Link key={c.to} to={c.to} className={`dropdown-link ${isActive(c.to) ? "current" : ""}`}>
+                        {c.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.label}
+                  to={item.to!}
+                  className={`nav-link ${isActive(item.to!) ? "current" : ""}`}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+            <a className="btn btn-shop" href="https://shop.horaaesports.com.np" target="_blank" rel="noopener">
+              Shop Now
+            </a>
             <a className="btn btn-discord" href="https://discord.gg/BXwybtRTRX" target="_blank" rel="noopener">
               Join Discord
             </a>
@@ -84,20 +123,40 @@ export default function Navbar() {
       <div className={`mobile-nav ${open ? "open" : ""}`} aria-hidden={!open}>
         <div className="mobile-nav-bg"></div>
         <nav className="mobile-nav-links">
-          {LINKS.map((l, i) => (
-            <button key={l.hash} style={{ transitionDelay: `${0.08 + i * 0.06}s` }} onClick={() => goTo(l.hash)}>
-              {l.label}
-            </button>
-          ))}
-          <a
-            className="btn btn-discord"
-            href="https://discord.gg/BXwybtRTRX"
-            target="_blank"
-            rel="noopener"
-            onClick={() => setOpen(false)}
-          >
-            Join Discord
-          </a>
+          {NAV.map((item, i) =>
+            item.children ? (
+              <div key={item.label} className={`mobile-group ${isChildActive(item.children) ? "active" : ""}`}>
+                <button
+                  style={{ transitionDelay: `${0.08 + i * 0.06}s` }}
+                  onClick={() => setOpenGroup(openGroup === item.label ? null : item.label)}
+                  aria-expanded={openGroup === item.label}
+                >
+                  {item.label} <span className="caret">{openGroup === item.label ? "▴" : "▾"}</span>
+                </button>
+                {openGroup === item.label && (
+                  <div className="mobile-sub">
+                    {item.children.map((c) => (
+                      <Link key={c.to} to={c.to} className={isActive(c.to) ? "current" : ""}>
+                        {c.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link key={item.label} to={item.to!} style={{ transitionDelay: `${0.08 + i * 0.06}s` }}>
+                {item.label}
+              </Link>
+            )
+          )}
+          <div style={{ transitionDelay: "0.44s" }} className="mobile-cta">
+            <a className="btn btn-shop" href="https://shop.horaaesports.com.np" target="_blank" rel="noopener">
+              Shop Now
+            </a>
+            <a className="btn btn-discord" href="https://discord.gg/BXwybtRTRX" target="_blank" rel="noopener">
+              Join Discord
+            </a>
+          </div>
         </nav>
         <div className="mobile-nav-foot">
           <a href="https://www.instagram.com/horaaesports" target="_blank" rel="noopener">Instagram</a>

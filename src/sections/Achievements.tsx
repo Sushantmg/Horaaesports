@@ -4,7 +4,7 @@ import Reveal from "../components/Reveal";
 import { api } from "../api";
 import type { Achievement } from "../../shared/data";
 
-export default function Achievements() {
+export default function Achievements({ heading = true }: { heading?: boolean }) {
   const [items, setItems] = useState<Achievement[]>([]);
 
   useEffect(() => {
@@ -14,11 +14,13 @@ export default function Achievements() {
   return (
     <section className="section" id="achievements">
       <div className="container">
-        <SectionHeading
-          kicker="// The Legacy"
-          title="ACHIEVEMENTS"
-          sub="A record that shook Nepali esports — and put us on the world map."
-        />
+        {heading && (
+          <SectionHeading
+            kicker="// The Legacy"
+            title="ACHIEVEMENTS"
+            sub="A record that shook Nepali esports — and put us on the world map."
+          />
+        )}
         <div className="bento">
           {items.map((a, i) => (
             <Reveal

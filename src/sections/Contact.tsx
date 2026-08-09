@@ -11,7 +11,7 @@ const SOCIALS = [
   { label: "DC", href: "https://discord.gg/BXwybtRTRX" },
 ];
 
-export default function Contact() {
+export default function Contact({ heading = true }: { heading?: boolean }) {
   const [state, setState] = useState<{ status: "idle" | "sending" | "done" | "error"; msg: string }>({
     status: "idle",
     msg: "",
@@ -44,7 +44,9 @@ export default function Contact() {
   return (
     <section className="section" id="contact">
       <div className="container">
-        <SectionHeading kicker="// The Bridge" title="PARTNER WITH US" sub="Sponsorships, business, media, or just say hi — we answer." />
+        {heading && (
+          <SectionHeading kicker="// The Bridge" title="PARTNER WITH US" sub="Sponsorships, business, media, or just say hi — we answer." />
+        )}
 
         <div className="contact-grid">
           <Reveal className="contact-info">

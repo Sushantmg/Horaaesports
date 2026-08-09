@@ -30,7 +30,7 @@ function BarFill({ value }: { value: number }) {
 
 type Tab = "players" | "staff";
 
-export default function Roster() {
+export default function Roster({ heading = true }: { heading?: boolean }) {
   const [tab, setTab] = useState<Tab>("players");
   const [players, setPlayers] = useState<Player[]>([]);
   const [staff, setStaff] = useState<Staff[]>([]);
@@ -43,11 +43,13 @@ export default function Roster() {
   return (
     <section className="section section-alt" id="roster">
       <div className="container">
-        <SectionHeading
-          kicker="// The Squad"
-          title="ROSTER"
-          sub="Five hunters on the island. A full unit behind the kill feed."
-        />
+        {heading && (
+          <SectionHeading
+            kicker="// The Squad"
+            title="ROSTER"
+            sub="Five hunters on the island. A full unit behind the kill feed."
+          />
+        )}
 
         <div className="tabs" role="tablist">
           <button
@@ -94,7 +96,7 @@ export default function Roster() {
                         </div>
                       ))}
                     </div>
-                    <Link className="player-profile" to={`/players/${p.slug}`}>
+                    <Link className="player-profile" to={`/roster/${p.slug}`}>
                       View Profile <span>→</span>
                     </Link>
                   </div>

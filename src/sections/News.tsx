@@ -5,7 +5,7 @@ import Reveal from "../components/Reveal";
 import { api } from "../api";
 import type { NewsItem } from "../../shared/data";
 
-export default function News() {
+export default function News({ heading = true }: { heading?: boolean }) {
   const [items, setItems] = useState<NewsItem[]>([]);
 
   useEffect(() => {
@@ -15,11 +15,13 @@ export default function News() {
   return (
     <section className="section section-alt" id="news">
       <div className="container">
-        <SectionHeading
-          kicker="// The Wire"
-          title="LATEST NEWS"
-          sub="Announcements, transfers, and tournament recaps straight from the camp."
-        />
+        {heading && (
+          <SectionHeading
+            kicker="// The Wire"
+            title="LATEST NEWS"
+            sub="Announcements, transfers, and tournament recaps straight from the camp."
+          />
+        )}
         <div className="news-grid" aria-live="polite">
           {items.map((n, i) => (
             <Reveal key={n.slug} delay={i * 60} as="article" className="news-card">

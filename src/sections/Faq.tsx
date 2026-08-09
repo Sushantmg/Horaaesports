@@ -4,7 +4,7 @@ import Reveal from "../components/Reveal";
 import { api } from "../api";
 import type { Faq } from "../../shared/data";
 
-export default function Faq() {
+export default function Faq({ heading = true }: { heading?: boolean }) {
   const [items, setItems] = useState<Faq[]>([]);
   const [open, setOpen] = useState<number | null>(null);
 
@@ -15,7 +15,9 @@ export default function Faq() {
   return (
     <section className="section section-alt" id="faq">
       <div className="container">
-        <SectionHeading kicker="// The Intel" title="FAQ" sub="Everything you need to know about the org." />
+        {heading && (
+          <SectionHeading kicker="// The Intel" title="FAQ" sub="Everything you need to know about the org." />
+        )}
         <div className="faq-list" aria-live="polite">
           {items.map((f, i) => (
             <Reveal key={f.q} className={`faq-item ${open === i ? "open" : ""}`}>

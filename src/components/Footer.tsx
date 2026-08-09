@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SOCIALS = [
   { label: "IG", href: "https://www.instagram.com/horaaesports" },
@@ -9,12 +9,14 @@ const SOCIALS = [
 ];
 
 const COMPANY = [
-  { label: "Achievements", hash: "achievements" },
-  { label: "Roster", hash: "roster" },
-  { label: "Schedule", hash: "schedule" },
-  { label: "News", hash: "news" },
-  { label: "Gallery", hash: "gallery" },
-  { label: "FAQ", hash: "faq" },
+  { label: "Roster", to: "/roster" },
+  { label: "Achievements", to: "/achievements" },
+  { label: "Schedule", to: "/schedule" },
+  { label: "Videos", to: "/videos" },
+  { label: "News", to: "/news" },
+  { label: "Gallery", to: "/gallery" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Contact", to: "/contact" },
 ];
 
 const OFFICIAL = [
@@ -25,18 +27,6 @@ const OFFICIAL = [
 ];
 
 export default function Footer() {
-  const { pathname } = useLocation();
-
-  const goTo = (hash: string) => {
-    if (pathname !== "/") {
-      window.location.hash = hash;
-      return;
-    }
-    const el = document.getElementById(hash);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    else window.location.hash = hash;
-  };
-
   return (
     <footer className="footer">
       <div className="container">
@@ -61,9 +51,9 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Company</h4>
             {COMPANY.map((c) => (
-              <button key={c.hash} onClick={() => goTo(c.hash)}>
+              <Link key={c.label} to={c.to}>
                 {c.label}
-              </button>
+              </Link>
             ))}
           </div>
 
