@@ -14,10 +14,23 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
   const [progress, setProgress] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [gone, setGone] = useState(false);
-  const fired = useRef(false);
+  const doneRef = useRef(onDone);
+
+  useEffect(() => {
+    doneRef.current = onDone;
+  });
 
   useEffect(() => {
     document.body.classList.add("preload-lock");
+    const failsafe = setTimeout(() => {
+      document.body.classList.remove("preload-lock");
+      setLeaving(true);
+      const cb = doneRef.current;
+      doneRef.current = () => {};
+      if (cb) cb();
+      setTimeout(() => setGone(true), 900);
+    }, 5000);
+
     let v = 0;
     let last = performance.now();
     let frame = 0;
@@ -30,11 +43,11 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
         v = 100;
         setProgress(100);
         setTimeout(() => {
+          document.body.classList.remove("preload-lock");
           setLeaving(true);
-          if (!fired.current) {
-            fired.current = true;
-            onDone();
-          }
+          const cb = doneRef.current;
+          doneRef.current = () => {};
+          if (cb) cb();
         }, 450);
         setTimeout(() => setGone(true), 1450);
         return;
@@ -46,9 +59,10 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
 
     return () => {
       cancelAnimationFrame(frame);
+      clearTimeout(failsafe);
       document.body.classList.remove("preload-lock");
     };
-  }, [onDone]);
+  }, []);
 
   if (gone) return null;
 
