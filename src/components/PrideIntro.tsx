@@ -300,15 +300,13 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
       }
     };
 
-    let sweepX = 0;
-    const launch = (jitter = 0.05) => {
-      sweepX = (sweepX + width * 0.055) % width;
-      const c = 1 + (rnd() < 0.55 ? 1 : 0);
+    const launch = (n = 0) => {
+      const c = n || 4 + Math.floor(rnd() * 3);
       for (let i = 0; i < c; i++) {
         parts.push(
           spark({
             kind: "rocket",
-            x: Math.max(12, Math.min(width - 12, sweepX + (rnd() - 0.5) * width * jitter)),
+            x: Math.max(12, Math.min(width - 12, (width * (i + rnd() * 0.4)) / c)),
             y: height + 4,
             vx: (rnd() - 0.5) * 1,
             vy: -(8 + rnd() * 3.8),
@@ -540,12 +538,12 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
       confInterval = window.setInterval(() => confetti(), 200);
       fireInterval = window.setInterval(() => {
         launch();
-        if (rnd() < 0.5) launch();
-      }, 360);
+        if (rnd() < 0.4) launch(3);
+      }, 420);
       cometInterval = window.setInterval(() => {
         comet();
-        if (rnd() < 0.4) comet();
-      }, 1500);
+        if (rnd() < 0.45) comet();
+      }, 1100);
     };
 
     const stopFX = () => {
