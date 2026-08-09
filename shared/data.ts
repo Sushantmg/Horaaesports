@@ -49,6 +49,15 @@ export interface GalleryItem {
   bg: string;
 }
 
+export interface VideoItem {
+  id: string;
+  title: string;
+  channel: string;
+  tag: string;
+  meta: string;
+  featured?: boolean;
+}
+
 export interface MerchItem {
   title: string;
   badge: string;
@@ -337,6 +346,45 @@ export const GALLERY: GalleryItem[] = [
   { title: "Individually we shine, but together we grow.", tag: "Community", emoji: "⭐", bg: "linear-gradient(135deg, #334155, #0f172a)" },
   { title: "Jersey Reveal", tag: "Merch", emoji: "👕", bg: "linear-gradient(135deg, #7a1d2e, #2b070c)" },
   { title: "Training Grounds", tag: "Practice", emoji: "🖥️", bg: "linear-gradient(135deg, #059669, #064e3b)" },
+];
+
+export const VIDEOS: VideoItem[] = [
+  {
+    id: "U9pxYZo5OcQ",
+    title: "[WATCHPARTY] 2025 PMWC at EWC Survival Stage D1",
+    channel: "Cr7 HORAA",
+    tag: "LIVE",
+    meta: "Watch Party · PMWC 2025",
+    featured: true,
+  },
+  {
+    id: "kFFiPknm_eA",
+    title: "Horaa Esports Makes HISTORY at PMWC 2025 Final!",
+    channel: "James Kody",
+    tag: "HIGHLIGHT",
+    meta: "PMWC 2025 Final",
+  },
+  {
+    id: "Avt0j-lLDek",
+    title: "Horaa Esports vs Alpha7 — Epic Clash in PMWC 2025!",
+    channel: "Ganesh YT",
+    tag: "MATCH",
+    meta: "Group Stage Clash",
+  },
+  {
+    id: "7oHgH8Oo25I",
+    title: "On Air With Sanjay #665 — Horaa Esports",
+    channel: "Sanjay Silwal Gupta",
+    tag: "INTERVIEW",
+    meta: "Guest Interview",
+  },
+  {
+    id: "wj6S8fTrXGo",
+    title: "ON-AIR with SKY and MAFIANINJA | Horaa Esports",
+    channel: "PUBG MOBILE Bangladesh",
+    tag: "INTERVIEW",
+    meta: "PMSL CSA Spring",
+  },
 ];
 
 export const MERCH: MerchItem[] = [

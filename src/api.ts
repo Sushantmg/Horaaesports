@@ -18,6 +18,7 @@ export const api = {
   news: () => get<import("../shared/data").NewsItem[]>("/api/news"),
   newsItem: (slug: string) => get<import("../shared/data").NewsItem>(`/api/news/${slug}`),
   gallery: () => get<import("../shared/data").GalleryItem[]>("/api/gallery"),
+  videos: () => get<import("../shared/data").VideoItem[]>("/api/videos"),
   merch: () => get<import("../shared/data").MerchItem[]>("/api/merch"),
   faqs: () => get<import("../shared/data").Faq[]>("/api/faqs"),
   sponsors: () => get<import("../shared/data").Sponsor[]>("/api/sponsors"),

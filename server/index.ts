@@ -15,6 +15,7 @@ import {
   STAFF,
   STATS,
   UPCOMING,
+  VIDEOS,
   type Player,
 } from "../shared/data.ts";
 
@@ -53,6 +54,7 @@ app.get("/api/news/:slug", (req, res) => {
 });
 
 app.get("/api/gallery", (_req, res) => ok(res, GALLERY));
+app.get("/api/videos", (_req, res) => ok(res, VIDEOS));
 app.get("/api/merch", (_req, res) => ok(res, MERCH));
 app.get("/api/faqs", (_req, res) => ok(res, FAQS));
 app.get("/api/sponsors", (_req, res) => ok(res, SPONSORS));
