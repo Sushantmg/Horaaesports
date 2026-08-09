@@ -51,7 +51,7 @@ export default function NewsDetail() {
     <main className="page-news">
       <div className="container container-narrow">
         <Reveal className="player-detail-back">
-          <Link to="/#news">← Back to News</Link>
+          <Link to="/news">← Back to News</Link>
         </Reveal>
 
         <Reveal as="article" className="news-article">

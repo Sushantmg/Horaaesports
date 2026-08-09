@@ -1,7 +1,9 @@
 import Hero from "../sections/Hero";
 import Ticker from "../sections/Ticker";
-import Achievements from "../sections/Achievements";
+import AboutStrip from "../sections/AboutStrip";
+import Videos from "../sections/Videos";
 import StatsBand from "../sections/StatsBand";
+import Achievements from "../sections/Achievements";
 import Roster from "../sections/Roster";
 import Schedule from "../sections/Schedule";
 import News from "../sections/News";
@@ -16,10 +18,12 @@ export default function Home() {
     <main id="home">
       <Hero />
       <Ticker />
-      <Achievements />
+      <AboutStrip />
       <StatsBand />
+      <Achievements />
       <Roster />
       <Schedule />
+      <Videos limit={3} link />
       <News />
       <Gallery />
       <Merch />

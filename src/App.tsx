@@ -8,6 +8,14 @@ import ScrollTop from "./components/ScrollTop";
 import Home from "./pages/Home";
 import PlayerDetail from "./pages/PlayerDetail";
 import NewsDetail from "./pages/NewsDetail";
+import RosterPage from "./pages/RosterPage";
+import AchievementsPage from "./pages/AchievementsPage";
+import SchedulePage from "./pages/SchedulePage";
+import NewsPage from "./pages/NewsPage";
+import GalleryPage from "./pages/GalleryPage";
+import VideosPage from "./pages/VideosPage";
+import FaqPage from "./pages/FaqPage";
+import ContactPage from "./pages/ContactPage";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -23,8 +31,16 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/players/:slug" element={<PlayerDetail />} />
+        <Route path="/roster" element={<RosterPage />} />
+        <Route path="/roster/:slug" element={<PlayerDetail />} />
+        <Route path="/achievements" element={<AchievementsPage />} />
+        <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/news" element={<NewsPage />} />
         <Route path="/news/:slug" element={<NewsDetail />} />
+        <Route path="/gallery" element={<GalleryPage />} />
+        <Route path="/videos" element={<VideosPage />} />
+        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <Footer />

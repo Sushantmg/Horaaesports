@@ -67,7 +67,7 @@ export default function PlayerDetail() {
     <main className="page-player">
       <div className="container">
         <Reveal className="player-detail-back">
-          <Link to="/#roster">← Back to Roster</Link>
+          <Link to="/roster">← Back to Roster</Link>
         </Reveal>
 
         <div className="player-detail">
