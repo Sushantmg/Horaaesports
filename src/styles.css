@@ -883,6 +883,13 @@ button {
   animation: float 8s ease-in-out infinite;
 }
 
+.nepal-flag {
+  display: inline-block;
+  vertical-align: -3px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+}
+
 .hero-mountains {
   position: absolute;
   left: 0;

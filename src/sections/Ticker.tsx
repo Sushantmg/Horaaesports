@@ -1,6 +1,8 @@
+import NepalFlag from "../components/NepalFlag";
+
 const ITEMS = [
   "HORAA ESPORTS",
-  "🇳🇵 NEPAL'S 1ST PMWC TEAM",
+  "NEPAL'S 1ST PMWC TEAM",
   "CHICKEN DINNER",
   "ERANGEL AWAITS",
   "ZONE 5 CLOSING",
@@ -12,6 +14,9 @@ const ITEMS = [
 export default function Ticker() {
   const Row = () => (
     <>
+      <span>
+        <NepalFlag size={16} /> <span className="tick-label">NEPAL'S 1ST PMWC TEAM</span> <span className="tick-sep">✕</span>
+      </span>
       {ITEMS.map((t, i) => (
         <span key={i}>
           {t} <span className="tick-sep">✕</span>

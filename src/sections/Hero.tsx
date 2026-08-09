@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import Counter from "../components/Counter";
 import Reveal from "../components/Reveal";
+import NepalFlag from "../components/NepalFlag";
 import { api } from "../api";
 import type { Stat } from "../../shared/data";
 
@@ -80,7 +81,7 @@ export default function Hero() {
       <div className="container hero-inner">
         <div className="hero-ring"></div>
         <Reveal className="hero-badge">
-          <span className="pulse-dot"></span> 🇳🇵 NEPAL'S PREMIER PUBG MOBILE ORGANIZATION
+          <span className="pulse-dot"></span> <NepalFlag size={20} /> NEPAL'S PREMIER PUBG MOBILE ORGANIZATION
         </Reveal>
 
         <Reveal delay={100}>
