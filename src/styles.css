@@ -4673,5 +4673,112 @@ body.preload-lock {
   .pride-footer { bottom: 34px; gap: 10px; }
   .pride-chips { gap: 6px; }
   .pride-chip { font-size: 0.5rem; padding: 5px 10px; letter-spacing: 0.14em; }
+  .pride-facts { display: none; }
   .pride-skip { top: 14px; right: 14px; padding: 8px 14px; }
+}
+
+/* ============================================================
+   PRIDE INTRO — DEVANAGARI & PRIDE EXTRAS
+   ============================================================ */
+.pride-flag-sub {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 9px;
+  animation: pride-word-in 0.9s ease 0.5s both;
+}
+
+.pride-flag-word {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 6vw, 3.4rem);
+  letter-spacing: 0.14em;
+  text-indent: 0;
+  color: var(--cream);
+  margin-top: 26px;
+  text-shadow: 0 3px 22px rgba(200, 16, 46, 0.55);
+  animation: pride-deva-word-in 0.9s ease 0.35s both;
+}
+
+@keyframes pride-deva-word-in {
+  from { opacity: 0; letter-spacing: 0.5em; filter: blur(4px); }
+  to { opacity: 1; letter-spacing: 0.14em; filter: blur(0); }
+}
+
+.pride-deva {
+  position: relative;
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 2.6vw, 1.35rem);
+  letter-spacing: 0.2em;
+  color: var(--gold-soft);
+  margin-top: 12px;
+  text-shadow: 0 0 16px rgba(240, 180, 41, 0.55);
+  opacity: 0;
+  animation: pride-deva-in 0.9s ease 1.05s forwards;
+}
+
+@keyframes pride-deva-in {
+  from { opacity: 0; transform: translateY(10px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.pride-motto {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2.7vw, 1.55rem);
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  text-shadow: 0 0 22px rgba(200, 16, 46, 0.55);
+}
+
+.pride-motto-en {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.92;
+}
+
+.pride-facts {
+  position: absolute;
+  left: 26px;
+  bottom: 84px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.75);
+  animation: pride-facts-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+
+.pride-facts span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+.pride-facts span::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--crimson);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+@keyframes pride-facts-in {
+  from { opacity: 0; transform: translateX(-26px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (min-width: 1921px) {
+  .pride-facts { font-size: 0.62rem; }
 }
