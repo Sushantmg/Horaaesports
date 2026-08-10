@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Route, Routes, useLocation } from "react-router-dom";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 import HudFrame from "./components/HudFrame";
@@ -61,12 +62,18 @@ export default function App() {
           </Routes>
           <Footer />
           <ScrollTop />
-          <GamerCursor />
-          <KillFeed />
-          <ScrollProgress />
-          <CrtEffect />
         </div>
       )}
+      {booted &&
+        createPortal(
+          <>
+            <GamerCursor />
+            <KillFeed />
+            <ScrollProgress />
+            <CrtEffect />
+          </>,
+          document.body
+        )}
       {intro && <PrideIntro onFinish={() => setIntro(false)} />}
     </>
   );
