@@ -5,6 +5,10 @@ import HudFrame from "./components/HudFrame";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollTop from "./components/ScrollTop";
+import GamerCursor from "./components/GamerCursor";
+import KillFeed from "./components/KillFeed";
+import ScrollProgress from "./components/ScrollProgress";
+import CrtEffect from "./components/CrtEffect";
 import Preloader from "./components/Preloader";
 import PrideIntro from "./components/PrideIntro";
 import Home from "./pages/Home";
@@ -57,6 +61,10 @@ export default function App() {
           </Routes>
           <Footer />
           <ScrollTop />
+          <GamerCursor />
+          <KillFeed />
+          <ScrollProgress />
+          <CrtEffect />
         </div>
       )}
       {intro && <PrideIntro onFinish={() => setIntro(false)} />}
