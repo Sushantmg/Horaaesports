@@ -10,6 +10,7 @@ import GamerCursor from "./components/GamerCursor";
 import KillFeed from "./components/KillFeed";
 import ScrollProgress from "./components/ScrollProgress";
 import CrtEffect from "./components/CrtEffect";
+import Konami from "./components/Konami";
 import Preloader from "./components/Preloader";
 import PrideIntro from "./components/PrideIntro";
 import Home from "./pages/Home";
@@ -71,6 +72,7 @@ export default function App() {
             <KillFeed />
             <ScrollProgress />
             <CrtEffect />
+            <Konami />
           </>,
           document.body
         )}
