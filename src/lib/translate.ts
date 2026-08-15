@@ -17,7 +17,14 @@ function bootstrap() {
   if (!document.getElementById("google_translate_element")) return;
   if (!window.google?.translate) return;
   initialized = true;
-  new window.google.translate.TranslateElement({ pageLanguage: "en", autoDisplay: false }, "google_translate_element");
+  new window.google.translate.TranslateElement(
+    {
+      pageLanguage: "en",
+      autoDisplay: false,
+      includedLanguages: "en,ne,hi,bn,ur,ar,es,fr,de,pt,ru,zh-CN,zh-TW,ja,ko,it,tr,nl,pl,th,vi,id,fa,uk,el,sv,ro,ta,te,mr,pa,sw,fil",
+    },
+    "google_translate_element"
+  );
 }
 
 function removeGoogleChrome() {
