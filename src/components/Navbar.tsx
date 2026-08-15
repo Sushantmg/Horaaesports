@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import LanguageSelect from "./LanguageSelect";
 
 interface NavChild {
   label: string;
@@ -121,16 +122,19 @@ export default function Navbar() {
             </a>
           </nav>
 
-          <button
-            className={`hamburger ${open ? "open" : ""}`}
-            aria-label="Toggle menu"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          <div className="nav-actions">
+            <LanguageSelect />
+            <button
+              className={`hamburger ${open ? "open" : ""}`}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
         </div>
       </header>
 

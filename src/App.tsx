@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { isPageTranslated } from "./lib/translate";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 import HudFrame from "./components/HudFrame";
 import Navbar from "./components/Navbar";
@@ -29,9 +30,14 @@ export default function App() {
   const { pathname } = useLocation();
   const [booted, setBooted] = useState(false);
   const [intro, setIntro] = useState(false);
+  const prevPath = useRef(pathname);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
+    if (prevPath.current !== pathname) {
+      prevPath.current = pathname;
+      if (isPageTranslated()) window.location.reload();
+    }
   }, [pathname]);
 
   const handlePreloadDone = () => {
