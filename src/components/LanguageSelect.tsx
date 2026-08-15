@@ -110,7 +110,7 @@ export default function LanguageSelect() {
   const label = LANGUAGES.find((l) => l.code === lang)?.label ?? "English";
 
   return (
-    <div className="lang-select" ref={rootRef}>
+    <div className={`lang-select${open ? " open" : ""}`} ref={rootRef}>
       <button
         className="lang-btn"
         type="button"
