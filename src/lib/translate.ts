@@ -1,4 +1,5 @@
 let initialized = false;
+let killSwitch = false;
 
 declare global {
   interface Window {
@@ -19,7 +20,22 @@ function bootstrap() {
   new window.google.translate.TranslateElement({ pageLanguage: "en", autoDisplay: false }, "google_translate_element");
 }
 
+function removeGoogleChrome() {
+  document
+    .querySelectorAll(".goog-te-banner-frame, .goog-te-balloon-frame, #goog-gt-tt")
+    .forEach((el) => el.remove());
+  document.body.style.setProperty("top", "0px", "important");
+}
+
+function startChromeKiller() {
+  if (killSwitch) return;
+  killSwitch = true;
+  removeGoogleChrome();
+  new MutationObserver(() => removeGoogleChrome()).observe(document.body, { childList: true });
+}
+
 export function ensureGoogleTranslate() {
+  startChromeKiller();
   if (!document.getElementById("google-translate-script")) {
     const script = document.createElement("script");
     script.id = "google-translate-script";
