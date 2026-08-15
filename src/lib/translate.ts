@@ -60,3 +60,23 @@ export function isPageTranslated() {
     document.body.classList.contains("translated-rtl")
   );
 }
+
+export function isTranslateReady() {
+  return !!document.querySelector<HTMLSelectElement>(".goog-te-combo");
+}
+
+export function getCurrentLanguage() {
+  const select = document.querySelector<HTMLSelectElement>(".goog-te-combo");
+  if (!select || !select.value) return "en";
+  return select.value;
+}
+
+export function setLanguage(code: string) {
+  const select = document.querySelector<HTMLSelectElement>(".goog-te-combo");
+  if (!select) return false;
+  const option = Array.from(select.options).find((o) => o.value === code);
+  if (!option) return false;
+  select.value = code;
+  select.dispatchEvent(new Event("change", { bubbles: true }));
+  return true;
+}
