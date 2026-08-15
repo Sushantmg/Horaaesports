@@ -205,6 +205,11 @@ button {
   border-bottom: 1px solid var(--line);
 }
 
+.nav.hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
 .nav-inner {
   display: flex;
   align-items: center;
@@ -993,6 +998,11 @@ button {
   white-space: nowrap;
   width: max-content;
   animation: marquee 22s linear infinite;
+  will-change: transform;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
 }
 
 .ticker-track span {

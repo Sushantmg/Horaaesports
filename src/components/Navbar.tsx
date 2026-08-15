@@ -38,12 +38,21 @@ const NAV: NavItem[] = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 30);
+      if (y < 160) setHidden(false);
+      else if (y > last + 12) setHidden(true);
+      else if (y < last - 8) setHidden(false);
+      last = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -52,11 +61,16 @@ export default function Navbar() {
   useEffect(() => {
     setOpen(false);
     setOpenGroup(null);
+    setHidden(false);
     document.body.classList.remove("no-scroll");
   }, [pathname]);
 
   useEffect(() => {
     document.body.classList.toggle("no-scroll", open);
+  }, [open]);
+
+  useEffect(() => {
+    setHidden(false);
   }, [open]);
 
   const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
@@ -65,7 +79,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`nav ${scrolled ? "scrolled" : ""}`}>
+      <header className={`nav ${scrolled ? "scrolled" : ""} ${hidden && !open ? "hidden" : ""}`}>
         <div className="container nav-inner">
           <Link to="/" className="brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             <span className="brand-mark">H</span>
