@@ -36,10 +36,47 @@ export default function Hero() {
     return () => hero.removeEventListener("mousemove", onMove);
   }, []);
 
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const mtn = hero.querySelector<HTMLElement>(".hero-mountains");
+      const emb = hero.querySelector<HTMLElement>(".hero-emblem");
+      const grid = hero.querySelector<HTMLElement>(".hero-grid");
+      if (mtn) mtn.style.translate = `0 ${Math.min(y * 0.4, 140)}px`;
+      if (emb) emb.style.translate = `0 ${y * 0.2}px`;
+      if (grid) grid.style.opacity = `${Math.max(0, 1 - y / 800)}`;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section className="hero" id="home" ref={heroRef}>
       <div className="hero-grid"></div>
       <div className="hero-scan"></div>
+
+      <div className="hero-aurora" aria-hidden="true">
+        <span className="aurora-1"></span>
+        <span className="aurora-2"></span>
+        <span className="aurora-3"></span>
+      </div>
+
+      <span className="hero-shoot shoot-1" aria-hidden="true"></span>
+      <span className="hero-shoot shoot-2" aria-hidden="true"></span>
+
+      <div className="hero-zone" aria-hidden="true">
+        <span className="zone-ring z1"></span>
+        <span className="zone-ring z2"></span>
+        <span className="zone-ring z3"></span>
+      </div>
+
+      <div className="hero-emblem" aria-hidden="true">
+        <NepalFlag size={320} />
+      </div>
+
       <div className="hero-glow hero-glow-1"></div>
       <div className="hero-glow hero-glow-2"></div>
       <span className="hero-orb orb-1"></span>
