@@ -2761,11 +2761,7 @@ body {
 .faq-a {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease;
-}
-
-.faq-item.open .faq-a {
-  max-height: 300px;
+  transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .faq-a-inner {
@@ -5756,4 +5752,30 @@ body.preload-lock {
   60% { transform: translateX(7px) scale(0.995); }
   76% { transform: translateX(-4px) scale(1); }
   90% { transform: translateX(2px) scale(1); }
+}
+
+/* ─── Page transition (route change) ─── */
+.page-transition {
+  animation: page-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Schedule tab crossfade ─── */
+.schedule-list--anim {
+  animation: tab-fade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tab-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Reduced motion: disable all new transitions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition,
+  .schedule-list--anim { animation: none; }
 }

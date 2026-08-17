@@ -53,20 +53,22 @@ export default function App() {
           <BackgroundCanvas />
           <HudFrame />
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/roster" element={<RosterPage />} />
-            <Route path="/roster/:slug" element={<PlayerDetail />} />
-            <Route path="/achievements" element={<AchievementsPage />} />
-            <Route path="/schedule" element={<SchedulePage />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/news/:slug" element={<NewsDetail />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/videos" element={<VideosPage />} />
-            <Route path="/faq" element={<FaqPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
+          <div className="page-transition" key={pathname}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/roster" element={<RosterPage />} />
+              <Route path="/roster/:slug" element={<PlayerDetail />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
+              <Route path="/schedule" element={<SchedulePage />} />
+              <Route path="/news" element={<NewsPage />} />
+              <Route path="/news/:slug" element={<NewsDetail />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/videos" element={<VideosPage />} />
+              <Route path="/faq" element={<FaqPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </div>
           <Footer />
           <ScrollTop />
         </div>

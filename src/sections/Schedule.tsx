@@ -64,7 +64,7 @@ export default function Schedule({ heading = true }: { heading?: boolean }) {
           </button>
         </div>
 
-        <div className="schedule-list" aria-live="polite">
+        <div className="schedule-list schedule-list--anim" key={tab} aria-live="polite">
           {tab === "upcoming" &&
             upcoming.map((m, i) =>
               m.countdown ? (
