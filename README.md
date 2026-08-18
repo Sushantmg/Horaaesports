@@ -2,7 +2,7 @@
 
 Nepal's premier PUBG Mobile esports organization — official website.
 
-**Live:** [horaaesports.com.np](https://horaaesports.com.np)
+**Live:** [horaaesports.vercel.app](https://horaaesports.vercel.app)
 
 ## Tech Stack
 
