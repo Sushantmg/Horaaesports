@@ -1,6 +1,6 @@
 # HORAA Esports
 
-Nepal's premier PUBG Mobile esports organization — official website.
+Nepal's premier PUBG Mobile esports organization — fan-made website by [Sushant MG](https://github.com/Sushantmg).
 
 **Live:** [horaaesports.vercel.app](https://horaaesports.vercel.app)
 
@@ -79,4 +79,4 @@ Pushes to `main` auto-deploy via Vercel. The `vercel.json` rewrites all non-asse
 
 ## License
 
-Private — Horaa Esports. All rights reserved.
+Built by [Sushant MG](https://github.com/Sushantmg). All rights reserved.
