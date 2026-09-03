@@ -79,4 +79,4 @@ Pushes to `main` auto-deploy via Vercel. The `vercel.json` rewrites all non-asse
 
 ## License
 
-Built by [Sushant MG](https://github.com/Sushantmg). All rights reserved.
+Built by [Sushan Tamang](https://github.com/Sushantmg). All rights reserved.
