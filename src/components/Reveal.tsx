@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
+import { usePointerGlow } from "../lib/usePointerGlow";
 
 interface RevealProps {
   children: ReactNode;
@@ -9,6 +10,7 @@ interface RevealProps {
 
 export default function Reveal({ children, delay = 0, className = "", as = "div" }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
+  const onPointerMove = usePointerGlow<HTMLElement>();
   const Tag = as as any;
 
   useEffect(() => {
@@ -30,7 +32,12 @@ export default function Reveal({ children, delay = 0, className = "", as = "div"
   }, []);
 
   return (
-    <Tag ref={ref} className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+    <Tag
+      ref={ref}
+      className={`reveal ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+      onPointerMove={onPointerMove}
+    >
       {children}
     </Tag>
   );

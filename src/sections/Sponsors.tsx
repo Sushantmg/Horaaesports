@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "../components/SectionHeading";
 import Reveal from "../components/Reveal";
+import { usePointerGlow } from "../lib/usePointerGlow";
 import { api } from "../api";
 import type { Sponsor } from "../../shared/data";
 
 export default function Sponsors() {
   const [items, setItems] = useState<Sponsor[]>([]);
+  const onPointerMove = usePointerGlow<HTMLAnchorElement>();
 
   useEffect(() => {
     api.sponsors().then(setItems).catch(() => setItems([]));
@@ -21,7 +23,14 @@ export default function Sponsors() {
         />
         <Reveal className="sponsors">
           {items.map((s) => (
-            <a className="sponsor" key={s.name} href={s.url} target="_blank" rel="noopener">
+            <a
+              className="sponsor spotlight"
+              key={s.name}
+              href={s.url}
+              target="_blank"
+              rel="noopener"
+              onPointerMove={onPointerMove}
+            >
               {s.logo ? (
                 <img className="sponsor-logo" src={s.logo} alt={s.name} loading="lazy" />
               ) : (

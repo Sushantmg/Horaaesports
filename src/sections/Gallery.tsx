@@ -39,7 +39,7 @@ export default function Gallery({ heading = true }: { heading?: boolean }) {
         )}
         <div className="gallery-grid" aria-live="polite">
           {items.map((g, i) => (
-            <Reveal key={g.title} delay={i * 60} as="figure" className="gallery-item">
+            <Reveal key={g.title} delay={i * 60} as="figure" className="gallery-item spotlight">
               <div
                 className={`gallery-bg${g.img ? " has-photo" : ""}`}
                 onClick={g.img ? () => setActive(photos.indexOf(g)) : undefined}

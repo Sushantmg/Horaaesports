@@ -17,7 +17,7 @@ export default function Merch() {
         <SectionHeading kicker="// The Gear" title="MERCH STORE" sub="Rep the crimson & gold wherever you drop." />
         <div className="merch-grid" aria-live="polite">
           {items.map((m, i) => (
-            <Reveal key={m.badge} delay={i * 60} as="article" className="merch-card">
+            <Reveal key={m.badge} delay={i * 60} as="article" className="merch-card spotlight">
               <div className="merch-thumb" style={{ background: m.bg }}>
                 <span className="merch-badge">{m.badge}</span>
                 <span className="merch-emoji">{m.emoji}</span>

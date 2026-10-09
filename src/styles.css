@@ -5821,3 +5821,76 @@ body.preload-lock {
   .site::before { opacity: 0.035; }
   .site::after  { background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%); }
 }
+
+/* ============================================================
+   POINTER SPOTLIGHT — cursor-following glow on cards
+   ============================================================ */
+.spotlight {
+  position: relative;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(240, 180, 41, 0.16),
+    rgba(255, 77, 94, 0.08) 40%,
+    transparent 62%
+  );
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* keep card content above the glow */
+.news-body,
+.merch-info,
+.staff-info,
+.sponsor > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   MAGNETIC BUTTONS
+   ============================================================ */
+.magnetic {
+  display: inline-flex;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   SECTION TITLE — flowing accent underline
+   ============================================================ */
+.section-title:after {
+  background-size: 200% 100%;
+  animation: title-flow 5s linear infinite;
+}
+
+@keyframes title-flow {
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnetic {
+    transition: none;
+  }
+
+  .spotlight::before {
+    display: none;
+  }
+
+  .section-title:after {
+    animation: none;
+  }
+}

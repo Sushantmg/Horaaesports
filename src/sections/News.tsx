@@ -24,7 +24,7 @@ export default function News({ heading = true }: { heading?: boolean }) {
         )}
         <div className="news-grid" aria-live="polite">
           {items.map((n, i) => (
-            <Reveal key={n.slug} delay={i * 60} as="article" className="news-card">
+            <Reveal key={n.slug} delay={i * 60} as="article" className="news-card spotlight">
               <div className="news-thumb" style={{ background: n.bg }}>
                 <span className="news-cat">{n.cat}</span>
                 <span className="thumb-emoji">{n.emoji}</span>

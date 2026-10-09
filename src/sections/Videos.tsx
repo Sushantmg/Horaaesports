@@ -45,7 +45,7 @@ export default function Videos({ heading = true, limit, link }: { heading?: bool
         )}
         <div className="videos-grid" aria-live="polite">
           {visible.map((v, i) => (
-            <Reveal key={v.id} delay={i * 60} as="article" className="video-card">
+            <Reveal key={v.id} delay={i * 60} as="article" className="video-card spotlight">
               <button className="video-thumb" onClick={() => setActive(v)} aria-label={`Play ${v.title}`}>
                 <img src={YT_THUMB(v.id)} alt={v.title} loading="lazy" />
                 <span className="video-play">▶</span>

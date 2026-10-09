@@ -1,4 +1,5 @@
 import { useRef, type ReactNode, type PointerEvent } from "react";
+import { setGlowVars } from "../lib/usePointerGlow";
 
 interface TiltCardProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ export default function TiltCard({ children, className = "", max = 8 }: TiltCard
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
     el.style.transform = `perspective(800px) rotateY(${px * max}deg) rotateX(${py * -max}deg) translateY(-8px)`;
+    setGlowVars(el, e.clientX, e.clientY);
   };
 
   const onLeave = () => {
@@ -25,7 +27,7 @@ export default function TiltCard({ children, className = "", max = 8 }: TiltCard
   };
 
   return (
-    <div ref={ref} className={`tilt ${className}`} onPointerMove={onMove} onPointerLeave={onLeave}>
+    <div ref={ref} className={`tilt spotlight ${className}`} onPointerMove={onMove} onPointerLeave={onLeave}>
       {children}
     </div>
   );

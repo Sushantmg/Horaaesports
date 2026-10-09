@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import Counter from "../components/Counter";
 import Reveal from "../components/Reveal";
+import Magnetic from "../components/Magnetic";
 import NepalFlag from "../components/NepalFlag";
 import { api } from "../api";
 import type { Stat } from "../../shared/data";
@@ -130,12 +131,16 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={300} className="hero-cta">
-          <a href="#roster" className="btn btn-primary" onClick={(e) => scrollToId(e, "roster")}>
-            Meet the Squad
-          </a>
-          <a href="#contact" className="btn btn-ghost" onClick={(e) => scrollToId(e, "contact")}>
-            Partner With Us
-          </a>
+          <Magnetic>
+            <a href="#roster" className="btn btn-primary" onClick={(e) => scrollToId(e, "roster")}>
+              Meet the Squad
+            </a>
+          </Magnetic>
+          <Magnetic strength={0.22}>
+            <a href="#contact" className="btn btn-ghost" onClick={(e) => scrollToId(e, "contact")}>
+              Partner With Us
+            </a>
+          </Magnetic>
         </Reveal>
 
         <Reveal delay={400}>
