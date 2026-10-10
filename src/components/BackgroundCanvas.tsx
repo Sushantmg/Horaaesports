@@ -26,14 +26,26 @@ export default function BackgroundCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cores = navigator.hardwareConcurrency || 4;
+    const lowPower = reduced || cores <= 4 || window.innerWidth < 720;
+    const maxParticles = lowPower ? 90 : 160;
+    const areaPerParticle = lowPower ? 14000 : 9000;
+    const linkDistance = lowPower ? 100 : 120;
+    const drawLinks = !lowPower;
+
     let raf = 0;
     let width = 0;
     let height = 0;
     let particles: Particle[] = [];
     let chutes: Parachute[] = [];
     let scrollOffset = 0;
+    let visible = !document.hidden;
     const mouse = { x: -9999, y: -9999 };
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -64,9 +76,125 @@ export default function BackgroundCanvas() {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const target = Math.min(160, Math.floor((width * height) / 9000));
+      const target = Math.min(maxParticles, Math.floor((width * height) / areaPerParticle));
       particles = Array.from({ length: target }, spawn);
-      chutes = Array.from({ length: 3 }, () => spawnChute());
+      chutes = reduced ? [] : Array.from({ length: lowPower ? 2 : 3 }, () => spawnChute());
+    };
+
+    const draw = (advance: boolean) => {
+      ctx.clearRect(0, 0, width, height);
+      const parallax = advance ? scrollOffset * 0.25 : 0;
+
+      ctx.save();
+      ctx.translate(0, -parallax % height);
+
+      for (const p of particles) {
+        if (advance) {
+          p.twinkle += p.twinkleSpeed;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 140) {
+            const push = (140 - dist) / 140;
+            p.x += (dx / (dist || 1)) * push * 2.4;
+            p.y += (dy / (dist || 1)) * push * 2.4;
+          }
+        }
+
+        const alpha = 0.25 + (Math.sin(p.twinkle) + 1) * 0.3;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.hue;
+        ctx.globalAlpha = Math.max(0.05, alpha);
+        ctx.fill();
+      }
+
+      if (drawLinks) {
+        ctx.globalAlpha = 0.6;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i];
+            const b = particles[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < linkDistance * linkDistance) {
+              const t = 1 - Math.sqrt(d2) / linkDistance;
+              ctx.strokeStyle = `rgba(200, 16, 46, ${t * 0.18})`;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      /* drifting parachutes */
+      if (chutes.length) {
+        ctx.globalAlpha = 0.32;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.lineWidth = 1.2;
+        for (const ch of chutes) {
+          if (advance) {
+            ch.y += ch.speed;
+            ch.phase += 0.008;
+            ch.x += Math.sin(ch.phase) * 0.35;
+            if (ch.y > height + 90) {
+              ch.y = -70;
+              ch.x = Math.random() * width;
+            }
+            if (ch.x < -60) ch.x = width + 40;
+            if (ch.x > width + 60) ch.x = -40;
+          }
+
+          const r = 15 * ch.scale;
+          const cx = ch.x;
+          const cy = ch.y;
+          ctx.beginPath();
+          ctx.arc(cx, cy - r, r, Math.PI, 0);
+          ctx.quadraticCurveTo(cx + r * 0.2, cy - r * 0.2, cx, cy - r * 0.1);
+          ctx.quadraticCurveTo(cx - r * 0.2, cy - r * 0.2, cx - r, cy - r);
+          ctx.stroke();
+          for (let k = -1; k <= 1; k += 1) {
+            ctx.beginPath();
+            ctx.moveTo(cx + k * r * 0.66, cy - r * 0.35);
+            ctx.lineTo(cx, cy + r * 0.9);
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    };
+
+    const loop = () => {
+      draw(true);
+      raf = requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      if (reduced || raf) return;
+      raf = requestAnimationFrame(loop);
+    };
+
+    const stop = () => {
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
     };
 
     const onScroll = () => {
@@ -74,6 +202,7 @@ export default function BackgroundCanvas() {
     };
 
     const onMouse = (e: MouseEvent) => {
+      if (reduced) return;
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
@@ -83,111 +212,34 @@ export default function BackgroundCanvas() {
       mouse.y = -9999;
     };
 
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-      const parallax = scrollOffset * 0.25;
+    const onResize = () => {
+      resize();
+      if (reduced) draw(false);
+    };
 
-      ctx.save();
-      ctx.translate(0, -parallax % height);
-
-      for (const p of particles) {
-        p.twinkle += p.twinkleSpeed;
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.y < -10) {
-          p.y = height + 10;
-          p.x = Math.random() * width;
-        }
-        if (p.x < -10) p.x = width + 10;
-        if (p.x > width + 10) p.x = -10;
-
-        const alpha = 0.25 + (Math.sin(p.twinkle) + 1) * 0.3;
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 140) {
-          const push = (140 - dist) / 140;
-          p.x += (dx / (dist || 1)) * push * 2.4;
-          p.y += (dy / (dist || 1)) * push * 2.4;
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.hue;
-        ctx.globalAlpha = Math.max(0.05, alpha);
-        ctx.fill();
-      }
-
-      ctx.globalAlpha = 0.6;
-      ctx.lineWidth = 1;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < 120 * 120) {
-            const t = 1 - Math.sqrt(d2) / 120;
-            ctx.strokeStyle = `rgba(200, 16, 46, ${t * 0.18})`;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      /* drifting parachutes */
-      ctx.globalAlpha = 0.32;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-      ctx.lineWidth = 1.2;
-      for (const ch of chutes) {
-        ch.y += ch.speed;
-        ch.phase += 0.008;
-        ch.x += Math.sin(ch.phase) * 0.35;
-        if (ch.y > height + 90) {
-          ch.y = -70;
-          ch.x = Math.random() * width;
-        }
-        if (ch.x < -60) ch.x = width + 40;
-        if (ch.x > width + 60) ch.x = -40;
-
-        const r = 15 * ch.scale;
-        const cx = ch.x;
-        const cy = ch.y;
-        ctx.beginPath();
-        ctx.arc(cx, cy - r, r, Math.PI, 0);
-        ctx.quadraticCurveTo(cx + r * 0.2, cy - r * 0.2, cx, cy - r * 0.1);
-        ctx.quadraticCurveTo(cx - r * 0.2, cy - r * 0.2, cx - r, cy - r);
-        ctx.stroke();
-        for (let k = -1; k <= 1; k += 1) {
-          ctx.beginPath();
-          ctx.moveTo(cx + k * r * 0.66, cy - r * 0.35);
-          ctx.lineTo(cx, cy + r * 0.9);
-          ctx.stroke();
-        }
-      }
-
-      ctx.restore();
-      ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(draw);
+    const onVisibility = () => {
+      visible = !document.hidden;
+      if (visible) start();
+      else stop();
     };
 
     resize();
-    draw();
-    window.addEventListener("resize", resize);
+    if (reduced) draw(false);
+    else start();
+
+    window.addEventListener("resize", onResize);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("mousemove", onMouse, { passive: true });
     window.addEventListener("mouseleave", onMouseLeave);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
+      stop();
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("mouseleave", onMouseLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

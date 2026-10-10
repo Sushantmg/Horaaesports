@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import {
   ACHIEVEMENTS,
+  DROP_ZONES,
   FAQS,
   GALLERY,
   HERO_STATS,
@@ -58,6 +59,7 @@ app.get("/api/videos", (_req, res) => ok(res, VIDEOS));
 app.get("/api/merch", (_req, res) => ok(res, MERCH));
 app.get("/api/faqs", (_req, res) => ok(res, FAQS));
 app.get("/api/sponsors", (_req, res) => ok(res, SPONSORS));
+app.get("/api/drop-zones", (_req, res) => ok(res, DROP_ZONES));
 app.get("/api/achievements", (_req, res) => ok(res, ACHIEVEMENTS));
 app.get("/api/stats", (_req, res) => ok(res, STATS));
 app.get("/api/hero-stats", (_req, res) => ok(res, HERO_STATS));

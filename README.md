@@ -50,6 +50,7 @@ public/
 ## Features
 
 - **Animated hero** — aurora nebula, Nepal flag watermark, PUBG zone rings, shooting stars, scroll parallax
+- **Interactive tactical map** — clickable Erangel drop zones with loot/contest meters, callouts and rotations
 - **Flip-clock countdown** — 3D rotateX animation on match timers, "WE'RE LIVE!" state at zero
 - **Gallery lightbox** — fullscreen viewer with keyboard navigation + body scroll lock
 - **Auto-hide navbar** — hides on scroll down, reveals on scroll up, ticker pauses on hover
@@ -60,6 +61,8 @@ public/
 - **CRT scanline overlay** — toggleable retro monitor effect
 - **Gamer cursor** — custom crosshair cursor
 - **Smooth page transitions** — fade + slide on route changes
+- **Accessibility** — skip-to-content link, visible keyboard focus rings, `aria-live` regions, labelled landmarks
+- **Performance & motion** — background canvas pauses when the tab is hidden, scales down on low-end devices, and respects `prefers-reduced-motion`
 - **Responsive** — mobile hamburger menu, fluid layouts
 
 ## SEO

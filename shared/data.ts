@@ -98,6 +98,20 @@ export interface Stat {
   prefix?: string;
 }
 
+export interface DropZone {
+  id: string;
+  name: string;
+  nick: string;
+  x: number;
+  y: number;
+  tier: "S" | "A" | "B" | "C";
+  loot: number;
+  hot: number;
+  player: string;
+  rotation: string;
+  note: string;
+}
+
 export const GRADS = [
   "linear-gradient(135deg, #e31837 0%, #8f1222 55%, #3d080d 100%)",
   "linear-gradient(135deg, #f0b429 0%, #b8860b 55%, #4a3303 100%)",
@@ -466,6 +480,113 @@ export const SPONSORS: Sponsor[] = [
     name: "INFINIX",
     logo: "/images/sponsors/infinix.jpg",
     url: "https://www.infinixmobility.com/",
+  },
+];
+
+export const DROP_ZONES: DropZone[] = [
+  {
+    id: "military-base",
+    name: "Military Base",
+    nick: "The Vault",
+    x: 52,
+    y: 82,
+    tier: "S",
+    loot: 96,
+    hot: 88,
+    player: "SkY",
+    rotation: "Bridge → Sosnovka → Georgopol hold",
+    note: "Top-tier loot behind a single chokepoint. Win the bridge and the island is yours — lose it and you're fishing for boats.",
+  },
+  {
+    id: "pochinki",
+    name: "Pochinki",
+    nick: "The Meat Grinder",
+    x: 47,
+    y: 55,
+    tier: "A",
+    loot: 84,
+    hot: 97,
+    player: "NoFear",
+    rotation: "Church roof → Rozhok pinch → zone edge",
+    note: "Central, loud and greedy. Perfect for a fragger who wants kills early — the risk is a third party on every door.",
+  },
+  {
+    id: "georgopol",
+    name: "Georgopol",
+    nick: "Container City",
+    x: 15,
+    y: 20,
+    tier: "A",
+    loot: 88,
+    hot: 74,
+    player: "JiGGL3",
+    rotation: "Containers → hospital → ferry east",
+    note: "Containers and apartments feed a full squad. Crate-dependent, so the IGL calls it when the plane flies north.",
+  },
+  {
+    id: "rozhok",
+    name: "Rozhok",
+    nick: "The Pivot",
+    x: 31,
+    y: 43,
+    tier: "B",
+    loot: 70,
+    hot: 62,
+    player: "SleepY",
+    rotation: "School cross → river → west ridge",
+    note: "A quiet utility drop that keeps rotations short and predictable — ideal for a disciplined support anchor.",
+  },
+  {
+    id: "school",
+    name: "School",
+    nick: "The Classroom",
+    x: 45,
+    y: 40,
+    tier: "B",
+    loot: 74,
+    hot: 79,
+    player: "SkY",
+    rotation: "Roof control → apartments → Rozhok",
+    note: "Roof control wins the building. High-skilled fights only — a coin-flip drop that rewards insane aim.",
+  },
+  {
+    id: "yasnaya",
+    name: "Yasnaya Polyana",
+    nick: "The Cathedral",
+    x: 78,
+    y: 38,
+    tier: "A",
+    loot: 82,
+    hot: 58,
+    player: "HaitDami",
+    rotation: "Cathedral roof → woods → zone center",
+    note: "Spread-out loot and sniper angles. The rotational sub can land here alone and rejoin the squad fully geared.",
+  },
+  {
+    id: "zharki",
+    name: "Zharki",
+    nick: "The Ghost Town",
+    x: 88,
+    y: 12,
+    tier: "C",
+    loot: 60,
+    hot: 30,
+    player: "SleepY",
+    rotation: "North coast → ferry → Georgopol",
+    note: "Empty and far, but feeding a late rotation. Horaa only takes it when the circle forces the north shore.",
+  },
+  {
+    id: "gatka",
+    name: "Gatka",
+    nick: "The Fallback",
+    x: 70,
+    y: 73,
+    tier: "B",
+    loot: 72,
+    hot: 52,
+    player: "NoFear",
+    rotation: "Bridge camp → quarry → south zone",
+    note: "A flexible southern backup that flips the squad onto boat plays and safe-zone edges when the island is contested.",
   },
 ];
 

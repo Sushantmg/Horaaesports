@@ -1,5 +1,6 @@
 import {
   ACHIEVEMENTS,
+  DROP_ZONES,
   FAQS,
   GALLERY,
   HERO_STATS,
@@ -13,6 +14,7 @@ import {
   UPCOMING,
   VIDEOS,
   type Achievement,
+  type DropZone,
   type Faq,
   type GalleryItem,
   type Match,
@@ -65,6 +67,7 @@ export const api = {
   merch: () => withFallback<MerchItem[]>("/api/merch", () => MERCH),
   faqs: () => withFallback<Faq[]>("/api/faqs", () => FAQS),
   sponsors: () => withFallback<Sponsor[]>("/api/sponsors", () => SPONSORS),
+  dropZones: () => withFallback<DropZone[]>("/api/drop-zones", () => DROP_ZONES),
   achievements: () => withFallback<Achievement[]>("/api/achievements", () => ACHIEVEMENTS),
   stats: () => withFallback<Stat[]>("/api/stats", () => STATS),
   heroStats: () => withFallback<Stat[]>("/api/hero-stats", () => HERO_STATS),

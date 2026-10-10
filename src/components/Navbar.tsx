@@ -140,7 +140,7 @@ export default function Navbar() {
 
       <div className={`mobile-nav ${open ? "open" : ""}`} aria-hidden={!open}>
         <div className="mobile-nav-bg"></div>
-        <nav className="mobile-nav-links">
+        <nav className="mobile-nav-links" aria-label="Mobile">
           {NAV.map((item, i) =>
             item.children ? (
               <div key={item.label} className={`mobile-group ${isChildActive(item.children) ? "active" : ""}`}>

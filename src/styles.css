@@ -5894,3 +5894,450 @@ body.preload-lock {
     animation: none;
   }
 }
+
+/* ============================================================
+   ACCESSIBILITY — skip link + keyboard focus
+   ============================================================ */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  transform: translateY(-250%);
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: var(--crimson);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 0.25s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="option"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   TACTICAL MAP — interactive drop zone intel
+   ============================================================ */
+.tac {
+  display: grid;
+  grid-template-columns: 1.12fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+.tac-map-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.tac-map {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 30% 24%, rgba(107, 107, 46, 0.45), transparent 46%),
+    radial-gradient(circle at 72% 68%, rgba(56, 84, 48, 0.42), transparent 52%),
+    linear-gradient(160deg, #17251b, #0d1712 58%, #0a120e);
+  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.6), 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.tac-map > * {
+  z-index: 1;
+}
+
+.tac-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 10% 10%;
+}
+
+.tac-roads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.tac-roads path {
+  fill: none;
+  stroke: rgba(240, 180, 41, 0.32);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 1.6;
+}
+
+.tac-water {
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(0, 56, 147, 0.5), rgba(0, 31, 82, 0.28));
+  filter: blur(4px);
+}
+
+.tac-water-a {
+  top: -6%;
+  right: -8%;
+  width: 55%;
+  height: 26%;
+  border-radius: 50% 40% 55% 45%;
+  transform: rotate(-14deg);
+}
+
+.tac-water-b {
+  bottom: -10%;
+  left: -10%;
+  width: 46%;
+  height: 30%;
+  border-radius: 45% 55% 50% 50%;
+}
+
+.tac-island {
+  position: absolute;
+  bottom: 8%;
+  left: 44%;
+  width: 24%;
+  height: 16%;
+  border-radius: 42% 58% 46% 54%;
+  background: rgba(120, 92, 40, 0.4);
+  box-shadow: 0 0 22px rgba(240, 180, 41, 0.18);
+  pointer-events: none;
+}
+
+.tac-zone-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  border: 2px dashed rgba(200, 16, 46, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: tac-pulse 4s ease-in-out infinite;
+}
+
+@keyframes tac-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.55; }
+  50% { transform: translate(-50%, -50%) scale(1.08); opacity: 0.9; }
+}
+
+.tac-pin {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.tac-pin-dot {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(6, 6, 10, 0.85);
+  border: 2px solid var(--muted);
+  color: var(--cream);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.tac-pin.tier-S .tac-pin-dot { border-color: var(--crimson); color: var(--crimson-soft); }
+.tac-pin.tier-A .tac-pin-dot { border-color: var(--gold); color: var(--gold-soft); }
+.tac-pin.tier-B .tac-pin-dot { border-color: #3f7fd6; color: #9ecbff; }
+.tac-pin.tier-C .tac-pin-dot { border-color: #b8c0cc; color: #d4dae2; }
+
+.tac-pin:hover .tac-pin-dot,
+.tac-pin.active .tac-pin-dot {
+  transform: scale(1.22);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.06), 0 0 20px currentColor;
+}
+
+.tac-pin.tier-S.active .tac-pin-dot { box-shadow: 0 0 0 5px rgba(227, 24, 55, 0.18), 0 0 22px rgba(227, 24, 55, 0.7); }
+.tac-pin.tier-A.active .tac-pin-dot { box-shadow: 0 0 0 5px rgba(240, 180, 41, 0.18), 0 0 22px rgba(240, 180, 41, 0.7); }
+.tac-pin.tier-B.active .tac-pin-dot { box-shadow: 0 0 0 5px rgba(63, 127, 214, 0.18), 0 0 22px rgba(63, 127, 214, 0.7); }
+.tac-pin.tier-C.active .tac-pin-dot { box-shadow: 0 0 0 5px rgba(184, 192, 204, 0.16), 0 0 22px rgba(184, 192, 204, 0.6); }
+
+.tac-pin-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cream);
+  white-space: nowrap;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(6, 6, 10, 0.82);
+  border: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.tac-pin:hover .tac-pin-label,
+.tac-pin:focus-visible .tac-pin-label,
+.tac-pin.active .tac-pin-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tac-map-code {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.tac-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+}
+
+.tac-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tac-legend-item i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+}
+
+.tac-legend-item.tier-S i { border-color: var(--crimson); }
+.tac-legend-item.tier-A i { border-color: var(--gold); }
+.tac-legend-item.tier-B i { border-color: #3f7fd6; }
+.tac-legend-item.tier-C i { border-color: #b8c0cc; }
+
+.tac-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tac-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tac-tier {
+  flex-shrink: 0;
+  padding: 9px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tac-tier.tier-S { color: var(--crimson-soft); border-color: rgba(227, 24, 55, 0.6); background: rgba(227, 24, 55, 0.12); }
+.tac-tier.tier-A { color: var(--gold-soft); border-color: rgba(240, 180, 41, 0.6); background: rgba(240, 180, 41, 0.12); }
+.tac-tier.tier-B { color: #9ecbff; border-color: rgba(63, 127, 214, 0.6); background: rgba(63, 127, 214, 0.12); }
+.tac-tier.tier-C { color: #d4dae2; border-color: rgba(184, 192, 204, 0.4); background: rgba(184, 192, 204, 0.1); }
+
+.tac-panel-titles {
+  min-width: 0;
+}
+
+.tac-name {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: var(--cream);
+}
+
+.tac-nick {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.tac-meters {
+  display: grid;
+  gap: 14px;
+}
+
+.tac-meter-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tac-meter-top b {
+  color: var(--cream);
+}
+
+.tac-meter-track {
+  height: 8px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tac-meter-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tac-meter-fill.loot { background: linear-gradient(90deg, var(--crimson), var(--gold)); }
+.tac-meter-fill.hot { background: linear-gradient(90deg, var(--nepal-blue), var(--crimson-soft)); }
+
+.tac-rows {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.tac-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tac-row dt {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tac-row dd {
+  margin: 0;
+  text-align: right;
+  font-size: 0.86rem;
+  color: var(--cream);
+}
+
+.tac-note {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.tac-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.tac-chip {
+  padding: 7px 13px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.tac-chip:hover {
+  color: var(--cream);
+  border-color: rgba(240, 180, 41, 0.5);
+}
+
+.tac-chip.active {
+  color: var(--cream);
+  border-color: var(--gold);
+  background: rgba(240, 180, 41, 0.12);
+}
+
+@media (max-width: 900px) {
+  .tac {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tac-zone-ring {
+    animation: none;
+  }
+
+  .tac-pin-dot,
+  .tac-pin-label,
+  .tac-meter-fill {
+    transition: none;
+  }
+}

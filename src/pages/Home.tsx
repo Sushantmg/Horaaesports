@@ -6,6 +6,7 @@ import Videos from "../sections/Videos";
 import StatsBand from "../sections/StatsBand";
 import Achievements from "../sections/Achievements";
 import Roster from "../sections/Roster";
+import TacticalMap from "../sections/TacticalMap";
 import Schedule from "../sections/Schedule";
 import News from "../sections/News";
 import Gallery from "../sections/Gallery";
@@ -16,7 +17,7 @@ import Contact from "../sections/Contact";
 
 export default function Home() {
   return (
-    <main id="home">
+    <main>
       <Hero />
       <Ticker />
       <Showreel />
@@ -24,6 +25,7 @@ export default function Home() {
       <StatsBand />
       <Achievements />
       <Roster />
+      <TacticalMap />
       <Schedule />
       <Videos limit={3} link />
       <News />

@@ -50,10 +50,13 @@ export default function App() {
       <Preloader onDone={handlePreloadDone} />
       {booted && (
         <div className="site">
+          <a className="skip-link" href="#content">
+            Skip to content
+          </a>
           <BackgroundCanvas />
           <HudFrame />
           <Navbar />
-          <div className="page-transition" key={pathname}>
+          <div className="page-transition" id="content" tabIndex={-1} key={pathname}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/roster" element={<RosterPage />} />
