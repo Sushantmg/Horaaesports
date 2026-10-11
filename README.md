@@ -50,7 +50,7 @@ public/
 ## Features
 
 - **Animated hero** — aurora nebula, Nepal flag watermark, PUBG zone rings, shooting stars, scroll parallax
-- **Interactive tactical map** — clickable Erangel drop zones with loot/contest meters, callouts and rotations
+- **Interactive tactical map** — clickable Erangel drop zones with animated drop tracer, hover intel, tier filters, sorting and loot/contest meters
 - **Flip-clock countdown** — 3D rotateX animation on match timers, "WE'RE LIVE!" state at zero
 - **Gallery lightbox** — fullscreen viewer with keyboard navigation + body scroll lock
 - **Auto-hide navbar** — hides on scroll down, reveals on scroll up, ticker pauses on hover
