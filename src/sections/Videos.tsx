@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import SectionHeading from "../components/SectionHeading";
 import Reveal from "../components/Reveal";
+import { DataEmpty, DataError, DataSkeleton } from "../components/DataState";
+import { useAsyncData } from "../lib/useAsyncData";
 import { api } from "../api";
 import type { VideoItem } from "../../shared/data";
 
@@ -9,12 +11,9 @@ const YT_THUMB = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 const YT_EMBED = (id: string) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
 
 export default function Videos({ heading = true, limit, link }: { heading?: boolean; limit?: number; link?: boolean }) {
-  const [items, setItems] = useState<VideoItem[]>([]);
+  const { data, status, error, retry } = useAsyncData<VideoItem[]>(() => api.videos());
+  const items = data ?? [];
   const [active, setActive] = useState<VideoItem | null>(null);
-
-  useEffect(() => {
-    api.videos().then(setItems).catch(() => setItems([]));
-  }, []);
 
   const visible = useMemo(() => {
     if (!limit) return items;
@@ -43,24 +42,31 @@ export default function Videos({ heading = true, limit, link }: { heading?: bool
             sub="Watch parties, highlights and interviews — straight from the drop zone."
           />
         )}
-        <div className="videos-grid" aria-live="polite">
-          {visible.map((v, i) => (
-            <Reveal key={v.id} delay={i * 60} as="article" className="video-card spotlight">
-              <button className="video-thumb" onClick={() => setActive(v)} aria-label={`Play ${v.title}`}>
-                <img src={YT_THUMB(v.id)} alt={v.title} loading="lazy" />
-                <span className="video-play">▶</span>
-                {v.tag && <span className="video-tag-badge">{v.tag}</span>}
-              </button>
-              <div className="video-body">
-                <h3 className="video-title">{v.title}</h3>
-                <p className="video-meta">
-                  {v.channel} · {v.meta}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        {link && (
+        {status === "loading" && <DataSkeleton count={3} className="videos-grid" label="Loading videos" />}
+        {status === "error" && <DataError label="Videos" message={error} onRetry={retry} />}
+        {status === "success" && visible.length === 0 && (
+          <DataEmpty title="No videos yet" hint="Highlights and watch parties will premiere here." />
+        )}
+        {status === "success" && visible.length > 0 && (
+          <div className="videos-grid" aria-live="polite">
+            {visible.map((v, i) => (
+              <Reveal key={v.id} delay={i * 60} as="article" className="video-card spotlight">
+                <button className="video-thumb" onClick={() => setActive(v)} aria-label={`Play ${v.title}`} aria-haspopup="dialog">
+                  <img src={YT_THUMB(v.id)} alt={v.title} loading="lazy" />
+                  <span className="video-play" aria-hidden="true">▶</span>
+                  {v.tag && <span className="video-tag-badge">{v.tag}</span>}
+                </button>
+                <div className="video-body">
+                  <h3 className="video-title">{v.title}</h3>
+                  <p className="video-meta">
+                    {v.channel} · {v.meta}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        )}
+        {link && status === "success" && visible.length > 0 && (
           <Reveal className="section-more">
             <Link className="btn btn-ghost" to="/videos">
               VIEW ALL VIDEOS <span>→</span>
@@ -72,7 +78,7 @@ export default function Videos({ heading = true, limit, link }: { heading?: bool
       {active && (
         <div className="video-modal" role="dialog" aria-modal="true" aria-label={active.title} onClick={() => setActive(null)}>
           <div className="video-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button className="video-modal-close" onClick={() => setActive(null)} aria-label="Close video">
+            <button className="video-modal-close" onClick={() => setActive(null)} aria-label="Close video" autoFocus>
               ✕
             </button>
             <iframe src={YT_EMBED(active.id)} title={active.title} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen />

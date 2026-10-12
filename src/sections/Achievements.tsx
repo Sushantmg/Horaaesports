@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
 import SectionHeading from "../components/SectionHeading";
 import Reveal from "../components/Reveal";
+import { DataEmpty, DataError, DataSkeleton } from "../components/DataState";
+import { useAsyncData } from "../lib/useAsyncData";
 import { api } from "../api";
 import type { Achievement } from "../../shared/data";
 
 export default function Achievements({ heading = true }: { heading?: boolean }) {
-  const [items, setItems] = useState<Achievement[]>([]);
-
-  useEffect(() => {
-    api.achievements().then(setItems).catch(() => setItems([]));
-  }, []);
+  const { data, status, error, retry } = useAsyncData<Achievement[]>(() => api.achievements());
+  const items = data ?? [];
 
   return (
     <section className="section" id="achievements">
@@ -21,34 +19,41 @@ export default function Achievements({ heading = true }: { heading?: boolean }) 
             sub="A record that shook Nepali esports — and put us on the world map."
           />
         )}
-        <div className="bento">
-          {items.map((a, i) => (
-            <Reveal
-              key={a.title}
-              delay={i * 60}
-              className={`bento-card ${a.hero ? "bento-hero" : ""} ${a.wide ? "bento-wide" : ""}`}
-            >
-              <div className="bento-icon">{a.icon}</div>
-              <span className="bento-tag">{a.tag}</span>
-              <h3 dangerouslySetInnerHTML={{ __html: a.title.replace(" at ", "<br/>at ") }} />
-              <p>{a.p}</p>
-              {a.sub && (
-                <div className="bento-meta">
-                  <span>{a.sub}</span>
-                </div>
-              )}
-              {a.track && (
-                <div className="bento-row">
-                  <div className="bento-track">
-                    {a.track.map((n) => (
-                      <span key={n}>{n}</span>
-                    ))}
+        {status === "loading" && <DataSkeleton count={4} className="bento" label="Loading achievements" />}
+        {status === "error" && <DataError label="Achievements" message={error} onRetry={retry} />}
+        {status === "success" && items.length === 0 && (
+          <DataEmpty title="No trophies to show yet" hint="The grind continues — check back after the next LAN." />
+        )}
+        {status === "success" && items.length > 0 && (
+          <div className="bento">
+            {items.map((a, i) => (
+              <Reveal
+                key={a.title}
+                delay={i * 60}
+                className={`bento-card ${a.hero ? "bento-hero" : ""} ${a.wide ? "bento-wide" : ""}`}
+              >
+                <div className="bento-icon">{a.icon}</div>
+                <span className="bento-tag">{a.tag}</span>
+                <h3 dangerouslySetInnerHTML={{ __html: a.title.replace(" at ", "<br/>at ") }} />
+                <p>{a.p}</p>
+                {a.sub && (
+                  <div className="bento-meta">
+                    <span>{a.sub}</span>
                   </div>
-                </div>
-              )}
-            </Reveal>
-          ))}
-        </div>
+                )}
+                {a.track && (
+                  <div className="bento-row">
+                    <div className="bento-track">
+                      {a.track.map((n) => (
+                        <span key={n}>{n}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </Reveal>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

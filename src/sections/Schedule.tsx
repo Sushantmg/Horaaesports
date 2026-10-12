@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SectionHeading from "../components/SectionHeading";
 import Reveal from "../components/Reveal";
 import Countdown from "../components/Countdown";
+import { DataEmpty, DataError, DataSkeleton } from "../components/DataState";
+import { useAsyncData } from "../lib/useAsyncData";
 import { api } from "../api";
 import type { Match } from "../../shared/data";
 
@@ -26,13 +28,19 @@ function MatchCard({ m, i }: { m: Match; i: number }) {
 
 export default function Schedule({ heading = true }: { heading?: boolean }) {
   const [tab, setTab] = useState<Tab>("upcoming");
-  const [upcoming, setUpcoming] = useState<Match[]>([]);
-  const [results, setResults] = useState<Match[]>([]);
+  const upcomingQuery = useAsyncData<Match[]>(() => api.upcoming());
+  const resultsQuery = useAsyncData<Match[]>(() => api.results());
+  const upcoming = upcomingQuery.data ?? [];
+  const results = resultsQuery.data ?? [];
+  const loading = upcomingQuery.loading || resultsQuery.loading;
+  const failed = upcomingQuery.status === "error" || resultsQuery.status === "error";
 
-  useEffect(() => {
-    api.upcoming().then(setUpcoming).catch(() => setUpcoming([]));
-    api.results().then(setResults).catch(() => setResults([]));
-  }, []);
+  const retryAll = () => {
+    if (upcomingQuery.status === "error") upcomingQuery.retry();
+    if (resultsQuery.status === "error") resultsQuery.retry();
+  };
+
+  const visible = tab === "upcoming" ? upcoming : results;
 
   return (
     <section className="section" id="schedule">
@@ -45,7 +53,7 @@ export default function Schedule({ heading = true }: { heading?: boolean }) {
           />
         )}
 
-        <div className="tabs" role="tablist">
+        <div className="tabs" role="tablist" aria-label="Schedule tabs">
           <button
             className={`tab-btn ${tab === "upcoming" ? "active" : ""}`}
             role="tab"
@@ -64,20 +72,40 @@ export default function Schedule({ heading = true }: { heading?: boolean }) {
           </button>
         </div>
 
-        <div className="schedule-list schedule-list--anim" key={tab} aria-live="polite">
-          {tab === "upcoming" &&
-            upcoming.map((m, i) =>
-              m.countdown ? (
-                <div key={m.event} className="schedule-block">
-                  <Countdown target={m.countdown} label={m.countdownLabel || "COUNTDOWN"} />
-                  <MatchCard m={m} i={i} />
-                </div>
-              ) : (
-                <MatchCard key={m.event} m={m} i={i} />
-              )
-            )}
-          {tab === "results" && results.map((m, i) => <MatchCard key={m.event} m={m} i={i} />)}
-        </div>
+        {loading && <DataSkeleton count={3} className="schedule-list" label="Loading schedule" />}
+        {!loading && failed && (
+          <DataError
+            label="Schedule"
+            message={[upcomingQuery.error, resultsQuery.error].filter(Boolean).join(" ")}
+            onRetry={retryAll}
+          />
+        )}
+        {!loading && !failed && visible.length === 0 && (
+          <DataEmpty
+            title={tab === "upcoming" ? "No upcoming matches" : "No results yet"}
+            hint={
+              tab === "upcoming"
+                ? "The next qualifier will be announced here soon."
+                : "Finished matches and placements will appear here."
+            }
+          />
+        )}
+        {!loading && !failed && visible.length > 0 && (
+          <div className="schedule-list schedule-list--anim" key={tab} aria-live="polite">
+            {tab === "upcoming" &&
+              upcoming.map((m, i) =>
+                m.countdown ? (
+                  <div key={m.event} className="schedule-block">
+                    <Countdown target={m.countdown} label={m.countdownLabel || "COUNTDOWN"} />
+                    <MatchCard m={m} i={i} />
+                  </div>
+                ) : (
+                  <MatchCard key={m.event} m={m} i={i} />
+                )
+              )}
+            {tab === "results" && results.map((m, i) => <MatchCard key={m.event} m={m} i={i} />)}
+          </div>
+        )}
       </div>
     </section>
   );
