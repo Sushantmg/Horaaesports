@@ -7,7 +7,7 @@ Nepal's premier PUBG Mobile esports organization — fan-made website by [Sushan
 ## Tech Stack
 
 - **React 18** + **TypeScript** + **Vite**
-- **React Router** (SPA with hash routing)
+- **React Router** (SPA with browser routing)
 - **Puppeteer-core** (dev testing)
 - **Google Translate** (i18n via widget)
 - **Vercel** (hosting + SPA rewrite)

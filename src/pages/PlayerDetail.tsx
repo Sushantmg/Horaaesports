@@ -26,13 +26,20 @@ export default function PlayerDetail() {
     setPlayer(null);
     setNotFound(false);
     if (!slug) return;
+    let cancelled = false;
     api
       .player(slug)
       .then((p) => {
+        if (cancelled) return;
         setPlayer(p);
         window.scrollTo({ top: 0, behavior: "auto" });
       })
-      .catch(() => setNotFound(true));
+      .catch(() => {
+        if (!cancelled) setNotFound(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   if (notFound) {

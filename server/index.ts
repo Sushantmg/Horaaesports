@@ -103,7 +103,8 @@ if (IS_PROD) {
   const dist = path.join(__dirname, "..", "dist");
   if (fs.existsSync(dist)) {
     app.use(express.static(dist, { maxAge: "1h", index: false }));
-    app.get("*", (_req, res) => res.sendFile(path.join(dist, "index.html")));
+    // SPA fallback via middleware (works on Express 4 and 5).
+    app.use((_req, res) => res.sendFile(path.join(dist, "index.html")));
   }
 }
 

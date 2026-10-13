@@ -13,13 +13,20 @@ export default function NewsDetail() {
     setItem(null);
     setNotFound(false);
     if (!slug) return;
+    let cancelled = false;
     api
       .newsItem(slug)
       .then((n) => {
+        if (cancelled) return;
         setItem(n);
         window.scrollTo({ top: 0, behavior: "auto" });
       })
-      .catch(() => setNotFound(true));
+      .catch(() => {
+        if (!cancelled) setNotFound(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   if (notFound) {
@@ -67,7 +74,7 @@ export default function NewsDetail() {
             ))}
             <div className="news-article-foot">
               <span className="chip gold">HORAA ESPORTS</span>
-              <Link className="btn btn-ghost btn-sm" to="/">
+              <Link className="btn btn-ghost btn-sm" to="/news">
                 More Stories
               </Link>
             </div>
