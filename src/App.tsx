@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { isPageTranslated } from "./lib/translate";
 import BackgroundCanvas from "./components/BackgroundCanvas";
+import ErrorBoundary from "./components/ErrorBoundary";
 import HudFrame from "./components/HudFrame";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -25,6 +26,7 @@ import GalleryPage from "./pages/GalleryPage";
 import VideosPage from "./pages/VideosPage";
 import FaqPage from "./pages/FaqPage";
 import ContactPage from "./pages/ContactPage";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -34,6 +36,7 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
+    document.getElementById("content")?.focus({ preventScroll: true });
     if (prevPath.current !== pathname) {
       prevPath.current = pathname;
       if (isPageTranslated()) window.location.reload();
@@ -57,6 +60,7 @@ export default function App() {
           <HudFrame />
           <Navbar />
           <div className="page-transition" id="content" tabIndex={-1} key={pathname}>
+            <ErrorBoundary>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/roster" element={<RosterPage />} />
@@ -69,8 +73,9 @@ export default function App() {
               <Route path="/videos" element={<VideosPage />} />
               <Route path="/faq" element={<FaqPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="*" element={<Home />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
+            </ErrorBoundary>
           </div>
           <Footer />
           <ScrollTop />
