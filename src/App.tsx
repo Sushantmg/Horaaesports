@@ -60,7 +60,7 @@ export default function App() {
           <HudFrame />
           <Navbar />
           <div className="page-transition" id="content" tabIndex={-1} key={pathname}>
-            <ErrorBoundary>
+            <ErrorBoundary key={pathname} resetKey={pathname}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/roster" element={<RosterPage />} />

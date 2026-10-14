@@ -131,7 +131,7 @@ export default function Contact({ heading = true }: { heading?: boolean }) {
               <span className="info-label">FOLLOW THE JOURNEY</span>
               <div className="socials">
                 {SOCIALS.map((s) => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
                     {s.label}
                   </a>
                 ))}

@@ -2,6 +2,7 @@ import { Component, type ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  resetKey?: string;
 }
 
 interface State {
@@ -17,6 +18,14 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(err: unknown) {
     console.error("[horaa] render crash:", err);
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    // A route change means a fresh view — clear a previous crash so one
+    // broken page can't permanently wedge the whole SPA.
+    if (prevProps.resetKey !== this.props.resetKey && this.state.hasError) {
+      this.setState({ hasError: false });
+    }
   }
 
   render() {
