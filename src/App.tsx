@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { isPageTranslated } from "./lib/translate";
@@ -16,17 +16,31 @@ import Konami from "./components/Konami";
 import Preloader from "./components/Preloader";
 import PrideIntro from "./components/PrideIntro";
 import Home from "./pages/Home";
-import PlayerDetail from "./pages/PlayerDetail";
-import NewsDetail from "./pages/NewsDetail";
-import RosterPage from "./pages/RosterPage";
-import AchievementsPage from "./pages/AchievementsPage";
-import SchedulePage from "./pages/SchedulePage";
-import NewsPage from "./pages/NewsPage";
-import GalleryPage from "./pages/GalleryPage";
-import VideosPage from "./pages/VideosPage";
-import FaqPage from "./pages/FaqPage";
-import ContactPage from "./pages/ContactPage";
-import NotFound from "./pages/NotFound";
+
+// Home stays eager (LCP route) — everything else splits into its own chunk
+// so first load only ships what "/" needs.
+const PlayerDetail = lazy(() => import("./pages/PlayerDetail"));
+const NewsDetail = lazy(() => import("./pages/NewsDetail"));
+const RosterPage = lazy(() => import("./pages/RosterPage"));
+const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
+const SchedulePage = lazy(() => import("./pages/SchedulePage"));
+const NewsPage = lazy(() => import("./pages/NewsPage"));
+const GalleryPage = lazy(() => import("./pages/GalleryPage"));
+const VideosPage = lazy(() => import("./pages/VideosPage"));
+const FaqPage = lazy(() => import("./pages/FaqPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+function RouteFallback() {
+  return (
+    <main className="page-mini">
+      <div className="page-loader">
+        <div className="preloader-bar"><span></span></div>
+        <p>LOADING…</p>
+      </div>
+    </main>
+  );
+}
 
 export default function App() {
   const { pathname } = useLocation();
@@ -51,36 +65,38 @@ export default function App() {
   return (
     <>
       <Preloader onDone={handlePreloadDone} />
-      {booted && (
-        <div className="site">
-          <a className="skip-link" href="#content">
-            Skip to content
-          </a>
-          <BackgroundCanvas />
-          <HudFrame />
-          <Navbar />
-          <div className="page-transition" id="content" tabIndex={-1} key={pathname}>
-            <ErrorBoundary key={pathname} resetKey={pathname}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/roster" element={<RosterPage />} />
-              <Route path="/roster/:slug" element={<PlayerDetail />} />
-              <Route path="/achievements" element={<AchievementsPage />} />
-              <Route path="/schedule" element={<SchedulePage />} />
-              <Route path="/news" element={<NewsPage />} />
-              <Route path="/news/:slug" element={<NewsDetail />} />
-              <Route path="/gallery" element={<GalleryPage />} />
-              <Route path="/videos" element={<VideosPage />} />
-              <Route path="/faq" element={<FaqPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            </ErrorBoundary>
-          </div>
-          <Footer />
-          <ScrollTop />
+      {/* Render content immediately so it loads/paints behind the preloader
+          overlay instead of waiting ~2s for the boot animation. */}
+      <div className="site">
+        <a className="skip-link" href="#content">
+          Skip to content
+        </a>
+        <BackgroundCanvas />
+        <HudFrame />
+        <Navbar />
+        <div className="page-transition" id="content" tabIndex={-1} key={pathname}>
+          <ErrorBoundary key={pathname} resetKey={pathname}>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/roster" element={<RosterPage />} />
+                <Route path="/roster/:slug" element={<PlayerDetail />} />
+                <Route path="/achievements" element={<AchievementsPage />} />
+                <Route path="/schedule" element={<SchedulePage />} />
+                <Route path="/news" element={<NewsPage />} />
+                <Route path="/news/:slug" element={<NewsDetail />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/videos" element={<VideosPage />} />
+                <Route path="/faq" element={<FaqPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
         </div>
-      )}
+        <Footer />
+        <ScrollTop />
+      </div>
       {booted &&
         createPortal(
           <>

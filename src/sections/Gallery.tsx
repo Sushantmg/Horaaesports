@@ -66,7 +66,7 @@ export default function Gallery({ heading = true }: { heading?: boolean }) {
                   aria-label={g.img ? `Open photo: ${g.title}` : undefined}
                 >
                   {g.img ? (
-                    <img src={g.img} alt={g.title} loading="lazy" className="gallery-photo" />
+                    <img src={g.img} alt={g.title} loading="lazy" decoding="async" className="gallery-photo" />
                   ) : (
                     <span className="thumb-emoji">{g.emoji}</span>
                   )}
@@ -113,7 +113,7 @@ export default function Gallery({ heading = true }: { heading?: boolean }) {
             ›
           </button>
           <figure className="lightbox-stage" onClick={(e) => e.stopPropagation()}>
-            <img key={active} className="lightbox-img" src={current.img} alt={current.title} />
+            <img key={active} className="lightbox-img" src={current.img} alt={current.title} decoding="async" />
             <figcaption className="lightbox-cap">
               <span className="gallery-tag">{current.tag}</span>
               <span className="lightbox-title">{current.title}</span>

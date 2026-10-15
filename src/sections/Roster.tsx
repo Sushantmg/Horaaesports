@@ -98,7 +98,7 @@ export default function Roster({ heading = true }: { heading?: boolean }) {
                 <Reveal key={p.slug} delay={i * 60}>
                   <TiltCard className="player-card">
                     <div className="player-photo" style={{ background: GRADS[i % GRADS.length] }}>
-                      <img src={p.photo} alt={`${p.ign} — ${p.name}`} loading="lazy" />
+                      <img src={p.photo} alt={`${p.ign} — ${p.name}`} loading="lazy" decoding="async" />
                       <span className={`player-role-tag ${p.tag === "gold" ? "gold" : ""}`}>{p.role}</span>
                     </div>
                     <div className="player-info">
@@ -144,7 +144,7 @@ export default function Roster({ heading = true }: { heading?: boolean }) {
                 <Reveal key={s.slug} delay={i * 60}>
                   <TiltCard className={`staff-card ${s.gold ? "gold" : ""}`}>
                     <div className="staff-photo">
-                      <img src={s.photo} alt={`${s.ign} — ${s.name}`} loading="lazy" />
+                      <img src={s.photo} alt={`${s.ign} — ${s.name}`} loading="lazy" decoding="async" />
                       {s.gold && <span className="staff-crown">👑</span>}
                     </div>
                     <div className="staff-info">

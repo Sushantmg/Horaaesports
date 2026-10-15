@@ -47,7 +47,7 @@ export default function BackgroundCanvas() {
     let scrollOffset = 0;
     let visible = !document.hidden;
     const mouse = { x: -9999, y: -9999 };
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
     const spawn = (): Particle => ({
       x: Math.random() * width,

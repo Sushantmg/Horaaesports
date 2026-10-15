@@ -79,14 +79,14 @@ export default function Showreel() {
             style={{ background: s.bg }}
           >
             {i === idx && s.kind === "gallery" && s.img && (
-              <img key={`g${idx}`} src={s.img} alt={s.title} className={`showreel-img kb-${idx % 3}`} />
+              <img key={`g${idx}`} src={s.img} alt={s.title} loading="lazy" decoding="async" className={`showreel-img kb-${idx % 3}`} />
             )}
             {i === idx && s.kind === "squad" && s.players && (
               <div key={`s${idx}`} className="showreel-lineup">
                 {s.players.map((p, pi) => (
                   <figure key={p.slug} className="showreel-player" style={{ animationDelay: `${pi * 110}ms` }}>
                     <div className="showreel-player-photo">
-                      <img src={p.photo} alt={`${p.ign} — ${p.name}`} loading="lazy" />
+                      <img src={p.photo} alt={`${p.ign} — ${p.name}`} loading="lazy" decoding="async" />
                     </div>
                     <figcaption className="showreel-player-meta">
                       <span className="showreel-player-ign">{p.ign}</span>

@@ -109,7 +109,7 @@ export default function PrideIntro({ onFinish }: { onFinish: () => void }) {
             <>
               <div className="pride-cr7">
                 <div className="pride-cr7-frame">
-                  <img className="pride-cr7-photo" src="/images/players/cr7.jpg" alt="CR7 Horaa" />
+                  <img className="pride-cr7-photo" src="/images/players/cr7.jpg" alt="CR7 Horaa" decoding="async" />
                 </div>
                 <span className="pride-cr7-name">CR7 HORAA</span>
                 <span className="pride-cr7-role">SANJAN GAUTAM · FOUNDER &amp; OWNER</span>

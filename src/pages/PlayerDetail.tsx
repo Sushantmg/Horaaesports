@@ -80,7 +80,7 @@ export default function PlayerDetail() {
         <div className="player-detail">
           <Reveal className="player-detail-photo" >
             <div className="player-photo" style={{ background: grad }}>
-              <img src={player.photo} alt={`${player.ign} — ${player.name}`} />
+              <img src={player.photo} alt={`${player.ign} — ${player.name}`} decoding="async" />
               <span className={`player-role-tag ${player.tag === "gold" ? "gold" : ""}`}>{player.role}</span>
             </div>
           </Reveal>

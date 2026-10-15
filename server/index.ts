@@ -166,11 +166,25 @@ app.use(
 if (IS_PROD) {
   const dist = path.join(__dirname, "..", "dist");
   if (fs.existsSync(dist)) {
-    app.use(express.static(dist, { maxAge: "1h", index: false, dotfiles: "ignore" }));
+    // Hashed Vite assets (`/assets/*`) are content-addressed and safe to cache
+    // for a year (matches vercel.json); everything else stays short-lived.
+    app.use(
+      express.static(dist, {
+        maxAge: "1h",
+        index: false,
+        dotfiles: "ignore",
+        setHeaders: (res, filePath) => {
+          if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+            res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+          }
+        },
+      })
+    );
     // SPA fallback via middleware (works on Express 4 and 5).
-    // GET-only: non-GET unknown routes (e.g. stray POSTs) get a 404, not index.html.
+    // GET/HEAD-only: other methods on unknown routes (e.g. stray POSTs) get a 404, not index.html.
     app.use((req, res) => {
-      if (req.method !== "GET") return err(res, 404, "Not found");
+      if (req.method !== "GET" && req.method !== "HEAD") return err(res, 404, "Not found");
+      res.setHeader("Cache-Control", "no-cache");
       res.sendFile(path.join(dist, "index.html"));
     });
   }

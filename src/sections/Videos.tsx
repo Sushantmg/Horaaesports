@@ -52,7 +52,7 @@ export default function Videos({ heading = true, limit, link }: { heading?: bool
             {visible.map((v, i) => (
               <Reveal key={v.id} delay={i * 60} as="article" className="video-card spotlight">
                 <button className="video-thumb" onClick={() => setActive(v)} aria-label={`Play ${v.title}`} aria-haspopup="dialog">
-                  <img src={YT_THUMB(v.id)} alt={v.title} loading="lazy" />
+                  <img src={YT_THUMB(v.id)} alt={v.title} loading="lazy" decoding="async" />
                   <span className="video-play" aria-hidden="true">▶</span>
                   {v.tag && <span className="video-tag-badge">{v.tag}</span>}
                 </button>

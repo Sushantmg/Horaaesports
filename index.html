@@ -25,7 +25,22 @@
   <meta name="twitter:image" content="https://horaaesports.com.np/images/og-banner.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet" />
+  <!-- Non-blocking font CSS: preload + print-trick so first paint isn't gated on fonts. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap"
+      rel="stylesheet"
+    />
+  </noscript>
+  <!-- Intro overlay image shown on every visit — preload so it's ready. -->
+  <link rel="preload" as="image" href="/images/players/cr7.jpg" fetchpriority="low" />
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SportsTeam","name":"HORAA ESPORTS","sport":"PUBG Mobile","url":"https://horaaesports.com.np/","slogan":"#FORNEPAL"}
   </script>
